@@ -4,9 +4,9 @@ node_modules
 bower_components
 dist
 config.yml
-/.build/assets
-/.build/config
-/.build/layout
-/.build/locales
-/.build/snippets
-/.build/templates
+/YOUR_THEME_NAME/assets
+/YOUR_THEME_NAME/config
+/YOUR_THEME_NAME/layout
+/YOUR_THEME_NAME/locales
+/YOUR_THEME_NAME/snippets
+/YOUR_THEME_NAME/templates
