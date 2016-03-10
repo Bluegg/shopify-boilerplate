@@ -1,0 +1,30 @@
+.wrapper {
+	@extend .clearfix;
+	max-width: 62.8em;
+	margin: 0 auto;
+	position: relative;
+	padding: 0 1em;
+	
+	@include mq($m) {
+		padding: 0 2em;
+	}
+}
+
+.global-wrapper {
+	position: relative;
+	z-index: 1;
+	width: 100%;
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+}
+
+.main {
+	flex: 1 0 auto;
+	-ms-flex-preferred-size: auto;
+}
+
+.site-header,
+.site-footer {
+	flex-shrink: 0;
+}

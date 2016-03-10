@@ -1,0 +1,64 @@
+/**
+ * Typographic styles
+ *
+ * This contains all basic typography rules and any @font-face imports.
+ */
+
+
+body {
+	font-family: $font-sans;
+	font-size: 14px;
+	line-height: $base-line-height;
+	color: $color-text;
+	@include mq($l) {
+		font-size: $base-font-size;
+	}
+}
+
+// Headings
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: $font-sans;
+	font-weight: 700;
+	text-rendering: optimizeLegibility;
+	margin: 0;
+	line-height: $base-line-height;
+}
+
+h1, .h1 {
+
+}
+h2, .h2 {
+
+}
+h3, .h3 {
+
+}
+h4, .h4 {
+
+}
+h5, .h5 {
+	font-size: 1em; 
+}
+h6, .h6 {
+	font-size: 1em;
+}
+
+blockquote, 
+.quote {
+	font-family: $font-serif;
+	font-style: italic;  
+	text-indent: 0;
+	margin-bottom: 1em;
+	margin-left: 0;
+}
+
+p {
+	margin: 0 0 $base-line-height;
+	line-height: $base-line-height;
+}
+
+.leading {
+	font-size: 1.2em;
+	line-height: 1.3em;
+}

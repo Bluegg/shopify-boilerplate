@@ -1,0 +1,189 @@
+$grid-breakpoints: (
+	xs: 0em,
+	s: $s,
+	m: $m,
+	l: $l,
+	xl: $xl,
+	xxl: $xxl
+);
+$grid-cols: 12;
+$grid-gutters: 2.4em !global;
+
+.grid {
+	letter-spacing: -0.31em;
+	/*word-spacing: -.43em;*/
+	margin-left: -$grid-gutters;
+}
+
+.grid--center {
+	text-align: center;
+	.grid__col {
+		text-align: left;
+	}
+}
+
+.grid--reverse {
+	direction: rtl;
+	.grid__col {
+		direction: ltr;
+	}
+}
+
+.grid--spaced {
+	.grid__col {
+		margin-bottom: $grid-gutters;
+	}
+
+	&.grid--tight {
+		.grid__col {
+			margin-bottom: $grid-gutters/2;
+		}
+	}
+}
+
+
+.grid--align-mid {
+	.grid__col {
+		vertical-align: middle;
+	}
+}
+
+.grid--stagger-align {
+	.grid__col:nth-of-type(1n) {
+		text-align: right;
+	}
+	.grid__col:nth-of-type(2n) {
+		text-align: left;
+	}
+}
+
+.grid--tight {
+	margin-left: -1em;
+	.grid__col {
+		padding-left: 1em;
+	}
+	.item {
+		margin-bottom: 1em;
+	}
+}
+
+.grid--gutterless {
+	margin-left: 0;
+	.grid__col {
+		padding-left: 0;
+	}
+}
+
+.grid--pixelgutter {
+	margin-left: 1px;
+	.grid__col {
+		padding-left: 1px;
+		margin-bottom: 1px;
+	}
+}
+
+
+.grid__col {
+	display: inline-block;
+	width: 100%;
+	vertical-align: top;
+	letter-spacing: normal;
+	word-spacing: normal;
+	// text-align: left;
+	position: relative;
+	padding-left: $grid-gutters;
+}
+
+@each $breakpoint, $size in $grid-breakpoints {
+	@for $enum from 1 through $grid-cols {
+		@for $denom from 1 through $grid-cols {
+			$width: percentage($enum / $denom);
+
+			// RESPONSIVE
+			@if ($enum <= $denom) and ($width < 100%) {
+
+				.#{$breakpoint}-#{$enum}-#{$denom} {
+
+					@if $size <= 0 {
+						width: $width;
+					} @else {
+						@include mq($size) {
+							width: $width;
+							display: inline-block;
+						}
+					}
+				}
+
+				.#{$breakpoint}-push-#{$enum}-#{$denom} {
+
+					@if $size <= 0 {
+						left: $width;
+						// @include prefixer(flex-basis, $width, webkit moz spec);
+					} @else {
+						@include mq($size) {
+							left: $width;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	@include mq($size) {
+
+		.#{$breakpoint}-nopush {
+			left: 0;
+		}
+
+		.#{$breakpoint}-1-1 {
+			width: 100%;
+			display: block;
+		}
+
+		.#{$breakpoint}-fr {
+			float: right;
+		}
+
+		.#{$breakpoint}-fl {
+			float: left;
+			margin-right: $grid-gutters;
+		}
+	}
+}
+
+.grid--flex {
+	flex-wrap: wrap;
+	display: flex;
+
+	&.grid--center {
+		justify-content: center;
+	}
+}
+
+.grid__col--flex {
+	display: flex;
+}
+
+body.grid-debug {
+	&:before {
+		position: fixed;
+		top: 0;
+		left: 0;
+		font-size: 0.8em;
+		opacity: 0.5;
+		padding: 0.2em;
+		width: 1em;
+		line-height: 1em;
+		text-align: center;
+		content: 'xs';
+		z-index: 10000;
+		color: white;
+		background-color: black;
+
+		@each $breakpoint, $size in $grid-breakpoints {
+			@include mq($size) {
+				content: "#{$breakpoint}";
+			}
+		}
+	}
+}

@@ -1,0 +1,38 @@
+/************************************************************************************************
+ *
+ * Variables
+ *
+ ***********************************************************************************************/
+
+// colours
+$color-red: #ff0000;
+
+// brand
+$color-primary: #ea662c;
+$color-secondary: #bee1e6;
+
+// assignment
+$color-selection: black;
+$color-selection-text: white;
+$color-text: black;
+$color-links: blue;
+$color-borders: black;
+$color-placeholder: grey;
+
+// type
+$font-sans: "Helvetica Neue", Arial, sans-serif;
+$font-serif: Georgia, serif;
+$base-font-size: 17px;
+$base-line-height: 1.5;
+
+// global border radius
+$global-radius: 2px;
+
+// breakpoints used by media query mixins
+// NOTE: If these values are changed, the comments in _grid.scss must also be changed
+$xs: 20em;
+$s: 30em;
+$m: 45em;
+$l: 65em;
+$xl: 95em;
+$xxl: 120em;

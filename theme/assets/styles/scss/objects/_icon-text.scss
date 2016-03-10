@@ -1,0 +1,15 @@
+.icon-text {
+	display: inline-block;
+	display: flex;
+	align-items: center;
+	
+	&__icon {
+		display: inline-block;
+		vertical-align: middle;
+		margin-right: 0.5em;
+	}
+	&__title {
+		display: inline-block;
+		vertical-align: middle;
+	}
+}

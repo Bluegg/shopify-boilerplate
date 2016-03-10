@@ -1,0 +1,39 @@
+.media {
+	display: flex;
+	align-items: flex-start;
+}
+
+.media__fig {
+	margin-right: 1em;
+	flex: 0 1 auto;
+	height: 100%;
+	display: block;
+}
+
+.media__body {
+	flex: 1;
+}
+
+.media__title {
+	color: $color-text;
+	line-height: 1em;
+	font-size: 1em;
+	margin-bottom: 0.2em;
+}
+
+.media__subtitle {
+	font-size: 0.8em;
+	margin-bottom: 0;
+}
+
+.media--vertical {
+	flex-direction: column;
+}
+
+.media--rev {
+	.media__fig {
+		order: 2;
+		margin-left: 1em;
+		margin-right: 0;
+	}
+}
