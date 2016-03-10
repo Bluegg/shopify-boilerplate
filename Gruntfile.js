@@ -21,7 +21,7 @@ module.exports = function(grunt) {
 
 	grunt.initConfig(configs);
 
-	grunt.registerTask('build', ['imagemin', 'svgmin', 'sass_globbing', 'sass',  'postcss', 'modernizr', 'browserify', 'copy'])
+	grunt.registerTask('build', ['imagemin', 'svgmin', 'sass_globbing', 'sass',  'postcss', 'modernizr', 'browserify', 'favicons', 'copy'])
 	grunt.registerTask('default', ['build', 'watch']);
 	grunt.registerTask('icons', ['fileregexrename', 'svgcss']);
 };
