@@ -1,3 +1,3 @@
 module.exports = {
-  clean: ['.build/assets', '.build/config', '.build/layout', '.build/locales', '.build/snippets', '.build/templates']
+  clean: ['<%= app %>/assets', '<%= app %>/config', '<%= app %>/layout', '<%= app %>/locales', '<%= app %>/snippets', '<%= app %>/templates']
 }

@@ -3,30 +3,30 @@ module.exports = {
     expand: true,
     cwd: 'theme/layout',
     src: '*.liquid',
-    dest: '.build/layout',
+    dest: '<%= app %>/layout',
   },
   templates: {
     expand: true,
     cwd: 'theme/templates',
     src: '**/**.liquid',
-    dest: '.build/templates',
+    dest: '<%= app %>/templates',
   },
   settings: {
     expand: true,
     cwd: 'theme/settings',
     src: 'settings_schema.json',
-    dest: '.build/config',
+    dest: '<%= app %>/config',
   },
   snippets: {
     expand: true,
     cwd: 'theme/snippets',
     src: '*.liquid',
-    dest: '.build/snippets',
+    dest: '<%= app %>/snippets',
   },
   locales: {
     expand: true,
     cwd: 'theme/locales',
     src: '*.json',
-    dest: '.build/locales',
+    dest: '<%= app %>/locales',
   }
 }
