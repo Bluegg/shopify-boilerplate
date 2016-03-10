@@ -12,7 +12,7 @@ It ships with a few sample theme files, mostly empty, that demonstrate how thesc
 
 1. Set up a new remote repo (e.g On Github or Bitbucket)
 1. Fork this repo. Clone it locally. Then do the following to break the relationship to this repo:
-  ```shell
+  ````shell
   # Set up the new remote
   git remote add new-origin git@github.com:user/new-repo.git
   # Push all local branches and tags
@@ -24,7 +24,7 @@ It ships with a few sample theme files, mostly empty, that demonstrate how thesc
   git remote rm origin
   # Rename "new repo" remote into just 'origin':
   git remote rename new-origin origin
-  ```
+  ````
 1. Go to your Shopify dev store and set up a new private app
 1. Get the API Key, password etc
 1. Run the Theme Gem bootstrap command:
@@ -45,4 +45,4 @@ The theme should now be pushing and updating the remote theme on Shopify
 `grunt build` will compile all your JS and SCSS, minify images blah, blah, etc
 `grunt` will do all that and run a watch task
 `grunt icon` will compile the icons into Base64 BG images in a SCSS file
-`grunt clean` will delete all the files in the build directory except the config.yml file. _GO CAREFULLY AS THIS DELETES THINGS!_ 
+`grunt clean` will delete all the files in the build directory except the config.yml file. _GO CAREFULLY AS THIS DELETES THINGS!_
