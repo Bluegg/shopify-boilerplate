@@ -7,10 +7,25 @@
     {% include 'head-open-graph' %}
     {% include 'head-favicon' %}
     {{ content_for_header }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.min.css" rel="stylesheet" >
     {{ 'style.css' | asset_url | stylesheet_tag }}
   </head>
   <body>
-    {{ content_for_layout }}
+
+    {% include 'site-header' %}
+
+    <section class="section">
+
+      <div class="wrapper">
+
+        {% include 'breadcrumb' %}
+
+        {{ content_for_layout }}
+
+      </div>
+
+    </section>
+
     {{ 'app.js' | asset_url | script_tag }}
   </body>
 </html>

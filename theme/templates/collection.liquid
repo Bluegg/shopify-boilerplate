@@ -1,1 +1,35 @@
-<h1>Collection Template</h1>
+<form action="" method="get" action="{{collection.url}}">
+
+<h1>{{ collection.title }}</h1>
+
+<div class="grid">
+
+  <div class="grid__col m-1-4">
+
+    {% include 'collection-sidebar' %}
+
+  </div>
+
+  <div class="grid__col m-3-4">
+
+  {% for product in collection.products %}
+
+    <div class="grid__col s-1-2 m-1-3 l-1-4">
+
+      <a href="{{ product.url | within: collection }}" class="grid__image">
+        <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+      </a>
+
+      <p class="h6">
+        <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+        <span>{{ product.price | money}}</span>
+      </p>
+
+    </div>
+  {% endfor %}
+
+  </div>
+
+</div>
+
+</form>

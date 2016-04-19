@@ -1,1 +1,160 @@
-<h1>Customers/Product Template</h1>
+<div itemscope itemtype="http://schema.org/Product">
+
+  {% comment %}
+    Get first variant, or deep linked one
+  {% endcomment %}
+  {% assign current_variant = product.selected_or_first_available_variant %}
+
+
+
+  <div class="grid">
+
+    <div class="grid__col m-1-2">
+      <figure class="fig">
+        <img src="//placehold.it/800x800" alt="{{ current_variant.title }}" />
+      </figure>
+
+      <figcaption class="fig__caption">{{ product.title }} | {{ current_variant.title }}</figcaption>
+
+      <div class="rte" itemprop="description">
+        {{ product.description }}
+      </div>
+
+    </div>
+
+
+    <div class="grid__col m-1-2">
+
+      <h1>{{ product.title }}</h1>
+      <h2>{{ current_variant.price | money }}</h2>
+
+      <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm" class="form">
+
+        {% comment %}
+
+        A single drop down for all variants
+
+        {% endcomment %}
+
+        <div class="form__item">
+
+        {% if product.variants|size > 1 %}
+        <select name="id" id="productSelect" class="select">
+          {% for variant in product.variants %}
+            {% if variant.available %}
+
+              <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money_with_currency }}</option>
+
+            {% else %}
+              <option disabled="disabled">
+                {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+              </option>
+            {% endif %}
+          {% endfor %}
+        </select>
+        {% endif %}
+
+        </div>
+
+        {% comment %}
+
+        A drop down for each variant
+        Requires JS at bottom to to update the value of the hidden product-select field
+        Would also need to update the price accordingly
+
+        {% endcomment %}
+
+        {% comment %}
+
+        <div class="form__item">
+
+        {% if product.variants.size > 1 %}
+        		{% if product.options[0] %}
+        			{% assign used = '' %}
+        			<label for="select-one">{{ product.options[0] }}</label>
+        			<select id='select-one' onchange="letsDoThis()">
+        				{% for variant in product.variants %}
+        					{% unless used contains variant.option1 %}
+        						<option value="{{ variant.option1 }}">{{ variant.option1 }}</option>
+        						{% capture used %}{{ used }} {{ variant.option1 }}{% endcapture %}
+        					{% endunless %}
+        				{% endfor %}
+        			</select>
+        		{% endif %}
+        		{% if product.options[1] %}
+        			{% assign used = '' %}
+        			<label for="select-one">{{ product.options[1] }}</label>
+        			<select id='select-two' onchange="letsDoThis()">
+        				{% for variant in product.variants %}
+        					{% unless used contains variant.option2 %}
+        						<option value="{{ variant.option2 }}">{{ variant.option2 }}</option>
+        						{% capture used %}{{ used }} {{ variant.option2 }}{% endcapture %}
+        					{% endunless %}
+        				{% endfor %}
+        			</select>
+        		{% endif %}
+        		{% if product.options[2] %}
+        			{% assign used = '' %}
+        			<label for="select-one">{{ product.options[2] }}</label>
+        			<select id='select-three' onchange="letsDoThis()">
+        				{% for variant in product.variants %}
+        					{% unless used contains variant.option3 %}
+        						<option value="{{ variant.option3 }}">{{ variant.option3 }}</option>
+        						{% capture used %}{{ used }} {{ variant.option3 }}{% endcapture %}
+        					{% endunless %}
+        				{% endfor %}
+        			</select>
+        		{% endif %}
+        	{% endif %}
+        	<input type="hidden"name="id" id="product-select" value="{{ product.variants.first.id }}" />
+
+        </div>
+
+        <script>
+        //  REQUIRED (SOMEWHERE) TO USE MULTIPLE DROP DOWNS
+        	function letsDoThis() {
+        		{% if product.options[0] %}var opt1 = document.getElementById('select-one').value;{% endif %}
+        		{% if product.options[1] %}var opt2 = document.getElementById('select-two').value;{% endif %}
+        		{% if product.options[2] %}var opt3 = document.getElementById('select-three').value;{% endif %}
+        		var id = '';
+        		{% for v in product.variants %}
+        		if(opt1=="{{ v.option1 }}"{% if product.options[1] %} && opt2=="{{ v.option2 }}"{% endif %}{% if product.options[2] %} && opt3=="{{ v.option3 }}"{% endif %}) {
+        				var id = {{ v.id }};
+        				var price = "{{ v.price | money }}";
+        			}
+        		{% endfor %}
+        		if(id!='') {
+        			document.getElementById('product-select').value = id;
+        			document.getElementById('price').innerHTML = price;
+        		} else {
+        			document.getElementById('product-select').value = '';
+        			document.getElementById('price').innerHTML = 'Unavailable';
+        		}
+
+        	}
+        </script>
+
+        {% endcomment %}
+
+        <div class="form__item">
+
+          <label for="Quantity">Quantity</label>
+          <input type="number" id="Quantity" name="quantity" value="1" min="1" class="quantity-selector">
+
+        </div>
+
+        <div class="form__item">
+
+          <button type="submit" id="AddToCart" name="add" class="btn">Add to basket</button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+
+</div>

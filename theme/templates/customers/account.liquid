@@ -1,1 +1,101 @@
-<h1>Customers/Account Template</h1>
+<!-- /templates/customers/account.liquid -->
+{% comment %}
+
+  For all available customer liquid tags:
+    - http://docs.shopify.com/themes/liquid-variables/customer
+
+{% endcomment %}
+
+<h1>Hi, {{ customer.first_name }}</h1>
+
+<div class="grid">
+
+<div class="grid__col m-3-4">
+
+    <h2>Your Orders</h2>
+
+    {% comment %}
+      If we have past orders, loop through each one
+    {% endcomment %}
+    {% paginate customer.orders by 20 %}
+      {% if customer.orders.size != 0 %}
+
+        <div class="table-wrap">
+          <table class="full">
+            <thead>
+              <tr>
+                <th>Order Number</th>
+                <th>Order Date</th>
+                <th>Payment Status</th>
+                <th>Order status</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for order in customer.orders %}
+                <tr>
+                  <td>{{ order.name | link_to: order.customer_url }}</td>
+                  <td>{{ order.created_at | date }}</td>
+                  <td>{{ order.financial_status_label }}</td>
+                  <td>{{ order.fulfillment_status_label }}</td>
+                  <td>{{ order.total_price | money }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+      {% else %}
+
+        <p>You've no orders... yet!</p>
+
+      {% endif %}
+      {% if paginate.pages > 1 %}
+        <hr>
+        <div class="pagination">
+          {{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}
+        </div>
+      {% endif %}
+    {% endpaginate %}
+  </div>
+
+  <div class="grid__col m-1-4">
+    <h2>Account Details</h2>
+
+    <h3>{{ customer.name }}</h3>
+
+    {% if customer.default_address != nil %}
+      <p>
+      {{ customer.default_address.address1 }}<br>
+
+      {% if customer.default_address.address2 != "" %}
+        {{ customer.default_address.address2 }}<br>
+      {% endif %}
+
+      {% if customer.default_address.city != "" %}
+        {{ customer.default_address.city }}<br>
+      {% endif %}
+
+      {% if customer.default_address.province_code != "" %}
+        {{ customer.default_address.province_code | upcase }}<br>
+      {% endif %}
+
+      {% if customer.default_address.zip != "" %}
+        {{ customer.default_address.zip | upcase }}<br>
+      {% endif %}
+
+      {% if customer.default_address.country != "" %}
+        {{ customer.default_address.country }}<br>
+      {% endif %}
+
+      {% if customer.default_address.phone != "" %}
+        {{ customer.default_address.phone }}
+      {% endif %}
+      </p>
+
+    {% endif %}
+
+    <p><a href="/account/addresses">View or Change your addresses ({{ customer.addresses_count }})</a></p>
+  </div>
+
+</div>

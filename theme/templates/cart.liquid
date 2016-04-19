@@ -1,1 +1,50 @@
 <h1>Cart Template</h1>
+
+{% if cart.item_count > 0 %}
+<form action="/cart" method="post" novalidate>
+<table>
+{% for item in cart.items %}
+<tr>
+  <td>
+      <a href="{{ item.url | within: collections.all }}" class="cart__image">
+        <img src="{{ item | img_url: 'medium' }}" alt="{{ item.title | escape }}">
+      </a>
+  </td>
+  <td>
+    <a href="{{ item.url }}">
+      {{ item.product.title }}
+      {% unless item.variant.title contains 'Default' %}
+        <br>
+        <small>{{ item.variant.title }}</small>
+      {% endunless %}
+    </a>
+  </td>
+  <td>
+      <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="cart__remove">
+        <small>Remove</small>
+      </a>
+    </td>
+    <td data-label="{{ 'cart.label.price' | t }}">
+      <span class="h3">
+        {{ item.price | money }}
+      </span>
+    </td>
+    <td data-label="{{ 'cart.label.quantity' | t }}">
+      <input type="number" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" min="0">
+    </td>
+    <td data-label="{{ 'cart.label.total' | t }}" class="text-right">
+      <span class="h3">
+        {{ item.line_price | money }}
+      </span>
+    </td>
+</tr>
+{% endfor %}
+</table>
+
+<input type="submit" name="update" class="btn--secondary update-cart" value="Update">
+<input type="submit" name="checkout" class="btn" value="Checkout">
+
+</form>
+{% else %}
+<h2>Your cart is empty</h2>
+{% endif %}

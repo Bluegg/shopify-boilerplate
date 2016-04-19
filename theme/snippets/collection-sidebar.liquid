@@ -1,0 +1,77 @@
+
+{% comment %}
+  Product tags in the current collection
+{% endcomment %}
+
+  <h3>Filter Collection</h3>
+
+  {% comment %}
+    To provide a 'catch-all' link at the top of the list,
+    check against the collection.handle, product type, and vendor.
+  {% endcomment %}
+  <ul>
+    <li{% unless current_tags %} class="is-active"{% endunless %}>
+
+      {% comment %}
+        Good for /collections/all collection and regular collections
+      {% endcomment %}
+      {% if collection.handle %}
+        <a href="/collections/{{ collection.handle }}">
+          Show all {{ collection.title }}
+        </a>
+
+      {% comment %}
+        Good for automatic type collections
+      {% endcomment %}
+      {% elsif collection.current_type %}
+        <a href="{{ collection.current_type | url_for_type }}">
+          Show all {{ collection.title }}
+        </a>
+
+      {% comment %}
+        Good for automatic vendor collections
+      {% endcomment %}
+      {% elsif collection.current_vendor %}
+        <a href="{{ collection.current_vendor | url_for_vendor }}">
+          Show all {{ collection.title }}
+        </a>
+      {% endif %}
+    </li>
+
+    {% if collection.all_tags.size > 0 %}
+
+      {% comment %}
+        And for the good stuff, loop through the tags themselves.
+      {% endcomment %}
+      {% for tag in collection.all_tags %}
+        {% if current_tags contains tag %}
+          <li class="is-active">
+            {{ tag | link_to_remove_tag: tag }}
+          </li>
+        {% else %}
+          <li>
+            {% comment %}
+              Use link_to_add_tag if you want to allow filtering
+              by multiple tags
+            {% endcomment %}
+            {{ tag | link_to_tag: tag }}
+          </li>
+        {% endif %}
+      {% endfor %}
+
+    {% else %}
+
+      <p>
+        That's your lot for filtering
+      </p>
+
+    {% endif %}
+  </ul>
+
+  <h3>Type</h3>
+
+  {% assign sorted_by_type = collection.products | sort: 'type' %}
+
+{% for product_type in collection.all_types %}
+{{ product_type }}
+{% endfor %}

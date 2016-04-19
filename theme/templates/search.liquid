@@ -1,1 +1,47 @@
-<h1>Customers/Search Template</h1>
+<h1>{{ search.results_count }} products found for {{ search.terms | escape }}</h1>
+
+{% if search.results_count > 0 %}
+
+  {% for product in search.results %}
+
+    <div class="grid__col s-1-2 m-1-3 l-1-4">
+
+      <a href="{{ product.url | within: collection }}" class="grid__image">
+        <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+      </a>
+
+      <p class="h6">
+        <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+        <span>{{ product.price | money}}</span>
+      </p>
+
+      <p>
+
+        {% assign search_tag_string = "" %}
+
+        {% for tag in product.tags %}
+         {{ search_tag_string | append: tag }}
+
+         {{ search_tag_string | append: ',' }}
+
+         {% assign search_tag = search_tag_string | split: ',' %}
+
+          {{ search_tag.lastx }}
+
+        {% endfor %}
+
+
+
+      </p>
+
+    </div>
+
+  {% endfor %}
+
+{% else %}
+
+  <p>
+    ¯\_(ツ)_/¯
+  </p>
+
+{% endif %}

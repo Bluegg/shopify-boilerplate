@@ -1,1 +1,79 @@
-<h1>Customers/Login Template</h1>
+<!-- /templates/customers/login.liquid -->
+
+  {% comment %}
+    If a user has successfully requested a new password, the form.posted_successfully? variable
+    is set to true within the 'recover_customer_password' form only. Within that form you'll see
+    the variable 'resetPassword' set to true, which is used to initialize timber.resetPasswordSuccess().
+  {% endcomment %}
+    {% comment %}
+  <div class="note form-success" id="ResetSuccess" style="display:none;">
+    {{ 'customer.recover_password.success' | t }}
+  </div>
+  {% endcomment %}
+
+  <div id="CustomerLoginForm" class="form">
+    {% form 'customer_login' %}
+
+      <h1>Login</h1>
+
+      {{ form.errors | default_errors }}
+
+      <label for="CustomerEmail">Email</label>
+      <input type="email" name="customer[email]" id="CustomerEmail" class="{% if form.errors contains 'email' %} error{% endif %}" placeholder="Your email address" autocorrect="off" autocapitalize="off" autofocus>
+
+      {% if form.password_needed %}
+        <label for="CustomerPassword">Password</label>
+        <input type="password" value="" name="customer[password]" id="CustomerPassword" class="{% if form.errors contains 'password' %} error{% endif %}" placeholder="Password">
+      {% endif %}
+
+      <p>
+        <input type="submit" class="btn btn--full" value="Log in">
+      </p>
+      <p><a href="{{ shop.url }}">No thanks, take me back to the shop!</a></p>
+      {% if form.password_needed %}
+        <p><a href="#recover" id="RecoverPassword">What's my password again?</a></p>
+      {% endif %}
+
+    {% endform %}
+  </div>
+
+  <div id="recover">
+
+    <h2>Recover Password</h2>
+    <p>Fill in your details and we'll send you a link to reset your password</p>
+
+    <div class="form-vertical">
+      {% form 'recover_customer_password' %}
+
+        {{ form.errors | default_errors }}
+
+
+        {% if form.posted_successfully? %}
+          {% assign resetPassword = true %}
+        {% endif %}
+
+        <label for="RecoverEmail">Email</label>
+        <input type="email" value="" name="email" id="RecoverEmail"  autocorrect="off" autocapitalize="off">
+
+        <p>
+          <input type="submit" class="btn" value="Submit">
+        </p>
+        <button type="button" id="HideRecoverPasswordLink" class="text-link">Cancel</button>
+      {% endform %}
+    </div>
+
+  </div>
+
+  {% comment %}
+    If accounts are set as optional, the following will be shown as an option
+    during checkout, not on the default /login page.
+  {% endcomment %}
+
+  {% if shop.checkout.guest_login %}
+
+    <h2>Or continue as a guest</h2>
+
+    {% form 'guest_login' %}
+      <input type="submit" class="btn" value="Yes, please!">
+    {% endform %}
+  {% endif %}

@@ -1,0 +1,37 @@
+<header class="site-header">
+
+  <div class="wrapper">
+
+
+    <a href="/">
+      <img src="//placehold.it/200x75?text=Logo" alt="Logo" />
+    </a>
+
+    {% include 'search-bar' %}
+
+    {% if shop.customer_accounts_enabled %}
+      {% if customer %}
+        <p>Welcome back, {{ customer.first_name }}! | <a href="/account">My Account</a> | {{ 'Log out' | customer_logout_link }}</p>
+      {% else %}
+        <p>{{ 'Log in' | customer_login_link }} | {% if shop.customer_accounts_optional %} {{ 'Create an account' | customer_register_link }}</p>
+        {% endif %}
+      {% endif %}
+    {% endif %}
+
+
+    {% if cart.item_count > 0 %}
+    <a href="/cart">Cart <span>({{cart.item_count}})</span> <span>{{ cart.total_price | money }}</span></a>
+
+    {% else %}
+
+    Your cart is empty
+
+    {% endif %}
+
+
+    {% include 'site-nav' %}
+
+  </div>
+
+</header>
+<!-- / .site-header -->
