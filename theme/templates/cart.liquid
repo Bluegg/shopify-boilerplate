@@ -1,16 +1,38 @@
-<h1>Cart Template</h1>
-
 {% if cart.item_count > 0 %}
+
+<header class="page__header">
+
+  <h1 class="page__title">Your basket</h1>
+
+</header>
+
 <form action="/cart" method="post" novalidate>
-<table>
+
+<div class="wrapper wrapper--narrow">
+
+<div class="cart">
+<div class="table-responsive table-wrap">
+<table class="table cart__table">
+  <thead>
+
+    <tr>
+      <th class="cart__img-cell"></th>
+      <th>Product name</th>
+      <th>Quantity</th>
+      <th class="cart__price-cell" >Item price</th>
+      <th>Remove</th>
+    </tr>
+
+  </thead>
+
 {% for item in cart.items %}
 <tr>
-  <td>
+  <td class="cart__img-cell"  data-label="{{ item.product.title }}">
       <a href="{{ item.url | within: collections.all }}" class="cart__image">
         <img src="{{ item | img_url: 'medium' }}" alt="{{ item.title | escape }}">
       </a>
   </td>
-  <td>
+  <td class="cart__prod-cell" data-label="Product name">
     <a href="{{ item.url }}">
       {{ item.product.title }}
       {% unless item.variant.title contains 'Default' %}
@@ -19,32 +41,50 @@
       {% endunless %}
     </a>
   </td>
-  <td>
-      <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="cart__remove">
-        <small>Remove</small>
-      </a>
-    </td>
-    <td data-label="{{ 'cart.label.price' | t }}">
-      <span class="h3">
-        {{ item.price | money }}
-      </span>
-    </td>
-    <td data-label="{{ 'cart.label.quantity' | t }}">
-      <input type="number" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" min="0">
-    </td>
-    <td data-label="{{ 'cart.label.total' | t }}" class="text-right">
-      <span class="h3">
-        {{ item.line_price | money }}
-      </span>
-    </td>
+  <td class="cart__qty-cell" data-label="Quantity">
+    <label>Quantity
+    <input type="number" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" min="0"></label>
+  </td>
+  <td class="cart__row-price-cell" data-label="Item price" class="text-right">
+    <span class="">
+      {{ item.price | money }}
+    </span>
+  </td>
+  <td class="cart__rm-cell">
+    <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="cart__remove">
+      <small>Remove</small>
+    </a>
+  </td>
 </tr>
 {% endfor %}
+<tr>
+  <th colspan="4" class="cart__price-th">Sub Total</th>
+  <td class="cart__price-cell" data-label="Sub Total"><span class="">{{ cart.total_price | money}}</span></td>
+</tr>
 </table>
 
-<input type="submit" name="update" class="btn--secondary update-cart" value="Update">
-<input type="submit" name="checkout" class="btn" value="Checkout">
+<div class="btn-align-wrap">
+  <input type="submit" name="update" class="btn btn--secondary update-cart" value="Update">
+  <input type="submit" name="checkout" class="btn" value="Checkout">
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
 
 </form>
 {% else %}
-<h2>Your cart is empty</h2>
+<header class="page__header">
+
+  <h1 class="page__title">Your basket is empty</h1>
+
+</header>
+
+<p><a href="{{shop.url}}">Continue shopping</a></p>
+
+<hr>
 {% endif %}

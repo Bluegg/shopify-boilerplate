@@ -1,0 +1,68 @@
+<script type="text/javascript">
+  (function($) {
+    Shopify.money_format = "{{ shop.money_format }}";
+
+    var onVariantSelected = function(variant, selector) {
+      // Update price display.
+      console.log('variant selected')
+
+      var formattedPrice = Shopify.formatMoney(variant.price, "");
+
+      if(variant.available) {
+        $('#ProductPrice').text(formattedPrice);
+        $('#soldOutMsg').removeClass('is-active');
+      } else {
+        $('#ProductPrice').text('Sold Out');
+        $('#soldOutMsg').addClass('is-active');
+      }
+      // Enable or disable the Add to Cart button.
+      $('#AddToCart').attr('disabled', variant.available ? null : 'disabled');
+      // Update the featured image.
+      if(variant.featured_image) {
+        var sizedImageUrl = Shopify.Image.getSizedImageUrl(variant.featured_image.src, 'grande');
+        updateFeaturedImage(sizedImageUrl)
+      }
+
+      // Update the active state of the buttons
+      $("[data-change-value]").removeClass('is-active');
+
+      for(var i = 0; i < variant.options.length; i++) {
+        $("[data-change-value='" + variant.options[i] + "']").addClass('is-active')
+      }
+    };
+
+    function updateFeaturedImage(newImageSrc) {
+      $('#FeaturedImage').attr('src', newImageSrc);
+    }
+
+    // Instantiate the option selectors.
+    var optionSelectors = new Shopify.OptionSelectors("productSelect", { product: {{ product | json }}, onVariantSelected: onVariantSelected, enableHistoryState: true });
+    $('[for="productSelect"]').hide();
+
+    // Create an event listener to set a specific variant when clicking on image thumbnails.
+    $(document).on('click', '[data-change-variant]', function(e) {
+      e.preventDefault();
+      var thisImg;
+      if ($(this).data('changeVariant') === '' || $(this).data('changeVariant') === undefined) {
+        updateFeaturedImage($(this).data('imgSrc'));
+        return
+      }
+      optionSelectors.selectVariant($(this).data('changeVariant'));
+    });
+
+    // Create an event listener to set a specific variant option when clicking on swatches.
+    $(document).on('click', '[data-change-option]', function(e) {
+      e.preventDefault();
+      var optionIndex = parseInt($(this).data('changeOption')),
+          optionValue = $(this).data('changeValue');
+
+      // $(this).addClass('is-active').siblings().removeClass('is-active')
+
+      if(optionSelectors.optionExistInSelect(optionSelectors.selectors[optionIndex].element, optionValue)) {
+        $(optionSelectors.selectors[optionIndex].element).val(optionValue).trigger('change');
+      }
+    });
+
+    $('#productSelectWrap').hide();
+  }(jQuery));
+</script>

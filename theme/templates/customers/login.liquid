@@ -11,55 +11,89 @@
   </div>
   {% endcomment %}
 
-  <div id="CustomerLoginForm" class="form">
-    {% form 'customer_login' %}
+  <div class="grid grid--center">
 
-      <h1>Login</h1>
+    <div class="grid__col m-2-3 l-1-2">
 
-      {{ form.errors | default_errors }}
+      <div id="CustomerLoginForm" class="form">
+        {% form 'customer_login' %}
 
-      <label for="CustomerEmail">Email</label>
-      <input type="email" name="customer[email]" id="CustomerEmail" class="{% if form.errors contains 'email' %} error{% endif %}" placeholder="Your email address" autocorrect="off" autocapitalize="off" autofocus>
+          <h1 class="h2">Customer login</h1>
 
-      {% if form.password_needed %}
-        <label for="CustomerPassword">Password</label>
-        <input type="password" value="" name="customer[password]" id="CustomerPassword" class="{% if form.errors contains 'password' %} error{% endif %}" placeholder="Password">
-      {% endif %}
+          {% if form.errors %}
+            <div class="msg-box msg-box--negative is-active">
+                {{ form.errors | default_errors }}
+            </div>
+          {% endif %}
 
-      <p>
-        <input type="submit" class="btn btn--full" value="Log in">
-      </p>
-      <p><a href="{{ shop.url }}">No thanks, take me back to the shop!</a></p>
-      {% if form.password_needed %}
-        <p><a href="#recover" id="RecoverPassword">What's my password again?</a></p>
-      {% endif %}
+          {% if resetPassword %}
 
-    {% endform %}
-  </div>
+            <div class="msg-box msg-box--positive">
+              <p class="msg-box__msg">Thanks. We've sent you an email to recover your password.</p>
+            </div>
 
-  <div id="recover">
+          {% endif %}
 
-    <h2>Recover Password</h2>
-    <p>Fill in your details and we'll send you a link to reset your password</p>
-
-    <div class="form-vertical">
-      {% form 'recover_customer_password' %}
-
-        {{ form.errors | default_errors }}
+          <div class="form__field">
+            <label for="CustomerEmail">Email</label>
+            <input type="email" name="customer[email]" id="CustomerEmail" class="{% if form.errors contains 'email' %} form__input--error{% endif %}" placeholder="Your email address" autocorrect="off" autocapitalize="off" autofocus>
+          </div>
 
 
-        {% if form.posted_successfully? %}
-          {% assign resetPassword = true %}
-        {% endif %}
+          {% if form.password_needed %}
+          <div class="form__field">
+            <label for="CustomerPassword">Password</label>
+            <input type="password" value="" name="customer[password]" id="CustomerPassword" class="{% if form.errors contains 'password' %} form__input--error{% endif %}" placeholder="Password">
+          </div>
+          {% endif %}
 
-        <label for="RecoverEmail">Email</label>
-        <input type="email" value="" name="email" id="RecoverEmail"  autocorrect="off" autocapitalize="off">
+          <div class="form__field">
+            <input type="submit" class="btn btn--full" value="Log in">
+          </div>
+          <p>
+            <a href="{{ shop.url }}">Back to shop</a>
+            {% if form.password_needed %}
+              <a href="#recover" id="RecoverPassword" class="fr">I forgot my password</a>
+            {% endif %}
+          </p>
 
-        <p>
-          <input type="submit" class="btn" value="Submit">
-        </p>
-        <button type="button" id="HideRecoverPasswordLink" class="text-link">Cancel</button>
-      {% endform %}
+        {% endform %}
+      </div>
+
+      <div id="recover">
+
+        <h2>Recover Password</h2>
+        <p>Fill in your details and we'll send you a link to reset your password</p>
+
+        <div class="form-vertical">
+          {% form 'recover_customer_password' %}
+
+            {% if form.errors %}
+              <div class="msg-box msg-box--negative is-active">
+                  {{ form.errors | default_errors }}
+              </div>
+            {% endif %}
+
+
+            {% if form.posted_successfully? %}
+              {% assign resetPassword = true %}
+            {% endif %}
+
+            <div class="form__field">
+              <label for="RecoverEmail">Email</label>
+              <input type="email" value="" name="email" id="RecoverEmail"  autocorrect="off" autocapitalize="off">
+            </div>
+
+            <div class="form__field">
+                <input type="submit" class="btn" value="Submit">
+
+                <button type="button" id="HideRecoverPasswordLink" class="fr btn--secondary">Cancel</button>
+            </div>
+          {% endform %}
+        </div>
+
+      </div>
+
     </div>
 
   </div>

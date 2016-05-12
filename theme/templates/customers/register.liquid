@@ -1,28 +1,48 @@
 <!-- /templates/customers/register.liquid -->
 
-<h1>Register</h1>
+<header class="page__header">
+  <h1 class="page__title">Register</h1>
+</header>
 
-{% form 'create_customer' %}
+<div class="grid grid--center">
 
-  {{ form.errors | default_errors }}
+  <div class="grid__col m-2-3 l-1-2">
 
-  <label for="FirstName">First Name</label>
-  <input type="text" name="customer[first_name]" id="FirstName" class="" placeholder="John" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autocapitalize="words" autofocus>
+  {% form 'create_customer' %}
 
-  <label for="LastName">Last Name</label>
-  <input type="text" name="customer[last_name]" id="LastName" class="" placeholder="Appleseed" {% if form.last_name %}value="{{ form.last_name }}"{% endif %} autocapitalize="words">
+    {% if form.errors %}
+    <div class="msg-box msg-box--negative">
+      {{ form.errors | default_errors }}
+    </div>
+    {% endif %}
 
-  <label for="Email">Email</label>
-  <input type="email" name="customer[email]" id="Email" class="{% if form.errors contains 'email' %} error{% endif %}" placeholder="john.appleseed@bluegg.co.uk" {% if form.email %} value="{{ form.email }}"{% endif %} autocorrect="off" autocapitalize="off">
+    <div class="form__field">
+      <label for="FirstName">First Name</label>
+      <input type="text" name="customer[first_name]" id="FirstName" class="" placeholder="John" {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autocapitalize="words" autofocus>
+    </div>
 
-  {% comment %}
-  <label for="CreatePassword">Password</label>
-  <input type="password" name="customer[password]" id="CreatePassword" class="{% if form.errors contains 'password' %} error{% endif %}" placeholder="Password">
-  {% endcomment %}
+    <div class="form__field">
+      <label for="LastName">Last Name</label>
+      <input type="text" name="customer[last_name]" id="LastName" class="" placeholder="Appleseed" {% if form.last_name %}value="{{ form.last_name }}"{% endif %} autocapitalize="words">
+    </div>
 
-  <p>
-    <input type="submit" value="Sign up" class="btn">
-  </p>
-  <a href="{{ shop.url }}">Get me out of here!</a>
+    <div class="form__field">
+      <label for="Email">Email</label>
+      <input type="email" name="customer[email]" id="Email" class="{% if form.errors contains 'email' %} form__input--error{% endif %}" placeholder="john.appleseed@bluegg.co.uk" {% if form.email %} value="{{ form.email }}"{% endif %} autocorrect="off" autocapitalize="off">
+    </div>
 
-{% endform %}
+    <div class="form__field">
+      <label for="CreatePassword">Password</label>
+      <input type="password" name="customer[password]" id="CreatePassword" class="{% if form.errors contains 'password' %} form__input--error{% endif %}" placeholder="Password">
+    </div>
+
+    <div class="form__field">
+      <input type="submit" value="Sign up" class="btn fr">
+      <a href="{{ shop.url }}">Back to the shop</a>
+    </div>
+
+  {% endform %}
+
+  </div>
+
+</div>

@@ -1,0 +1,49 @@
+{% for option in product.options %}
+
+  {% if option == swatch %}
+
+    <div class="swatch__wrapper">
+
+      {% assign option_index = forloop.index0 %}
+
+      {% assign displayed_option_values = '' %}
+
+      <h3 class="label">{{ option }}</h3>
+
+      <div class="swatch__grp">
+      {% for variant in product.variants %}
+
+        {% assign option_value = variant.options[option_index] %}
+
+        {% unless displayed_option_values contains option_value %}
+
+          {% if option == 'Color' or option == 'Colour' %}
+
+            <button type="button" class="btn btn--secondary btn--small btn--variant" data-change-option="{{ option_index }}" data-change-value="{{ option_value }}">
+              <span class="swatch" style="width: 1em; height: 1em; display: inline-block; vertical-align: -1px; margin-right: .5em; background-color: {{ option_value | handleize }};"></span>
+              {{ option_value }}</button>
+
+          {% else %}
+
+            <button type="button" data-change-option="{{ option_index }}" data-change-value="{{ option_value }}" class="btn btn--secondary btn--small btn--variant{% unless variant.available %} is-disabled{% endunless %}">
+              {{ option_value }}
+            </button>
+
+          {% endif %}
+
+          {% assign displayed_option_values = displayed_option_values | join: ',' %}
+
+          {% assign displayed_option_values = displayed_option_values | append: ',' | append: option_value %}
+
+          {% assign displayed_option_values = displayed_option_values | split: ',' %}
+
+        {% endunless %}
+
+      {% endfor %}
+      </div>
+
+    </div>
+
+  {% endif %}
+
+{% endfor %}

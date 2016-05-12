@@ -5,156 +5,180 @@
   {% endcomment %}
   {% assign current_variant = product.selected_or_first_available_variant %}
 
+  <header class="page-header"></header>
 
+  <div class="product__wrap">
 
-  <div class="grid">
+    <div class="grid">
 
-    <div class="grid__col m-1-2">
-      <figure class="fig">
-        <img src="//placehold.it/800x800" alt="{{ current_variant.title }}" />
-      </figure>
+      <div class="grid__col l-2-3">
 
-      <figcaption class="fig__caption">{{ product.title }} | {{ current_variant.title }}</figcaption>
+        <div class="gallery">
 
-      <div class="rte" itemprop="description">
-        {{ product.description }}
-      </div>
+          {% assign featured_img = product.selected_or_first_available_variant.featured_image | default: product.featured_image %}
 
-    </div>
+          <figure class="fig">
+             <img id="FeaturedImage" src="{{ featured_img | product_img_url: 'grande' }}" alt="{{ featured_img.alt }}" class="gallery__img" />
+          </figure>
 
+        </div>
 
-    <div class="grid__col m-1-2">
-
-      <h1>{{ product.title }}</h1>
-      <h2>{{ current_variant.price | money }}</h2>
-
-      <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm" class="form">
-
-        {% comment %}
-
-        A single drop down for all variants
-
-        {% endcomment %}
-
-        <div class="form__item">
-
-        {% if product.variants|size > 1 %}
-        <select name="id" id="productSelect" class="select">
-          {% for variant in product.variants %}
-            {% if variant.available %}
-
-              <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money_with_currency }}</option>
-
-            {% else %}
-              <option disabled="disabled">
-                {{ variant.title }} - {{ 'products.product.sold_out' | t }}
-              </option>
-            {% endif %}
-          {% endfor %}
-        </select>
+        {% if product.images.size > 1 %}
+          <div class="gallery__thumbs">
+            {% for image in product.images %}
+            <a href="{{ image | product_img_url: 'original'}}" class="gallery__thumb" target="_blank" data-change-variant="{{ image.variants.first.id }}" data-img-src="{{ image.src | product_img_url: 'grande' }}">
+              <img src="{{ image | product_img_url: 'thumb' }}" class="gallery__img" alt="{{ image.alt }}" />
+            </a>
+            {% endfor %}
+          </div>
         {% endif %}
 
+      </div>
+
+
+      <div class="grid__col l-1-3">
+
+
+          <div class="product-description">
+            <h1 class="product-description__title">{{ product.title }}
+            <span id="ProductPrice" class="product-description__price">{{ current_variant.price | money }}</span>
+            </h1>
+
+            <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm" class="form">
+
+              {% comment %}
+
+              A single drop down for all variants
+
+              {% endcomment %}
+
+              <div class="grid grid--flex">
+
+
+                  <div class="grid__col">
+
+                    {% comment %}
+                    {% if product.options.size == 1 %}
+
+                      <div class="form__field">
+
+                        {% for option in product.options %}
+
+                          <h3 class="label">{{ option }}</h3>
+
+                          {% for variant in product.variants %}
+                            <a class="btn btn--small btn--variant{% if variant == product.selected_or_first_available_variant %} is-active{% endif %}" href="{{product.url}}?variant={{ variant.id }}" data-change-variant="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</a>
+                          {% endfor %}
+
+                        {% endfor %}
+
+                      </div>
+
+                    {% endif %}
+                    {% endcomment %}
+
+                    <div id="productSelectWrap" class="form__field">
+
+                      <label for="productSelect" class="label">Options</label>
+                      <select name="id" id="productSelect" class="select">
+                        {% for variant in product.variants %}
+                          {% if variant.available %}
+
+                            <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }} | {{ variant.price | money_with_currency }}</option>
+
+                          {% else %}
+                            <option disabled="disabled">
+                              {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+                            </option>
+                          {% endif %}
+                        {% endfor %}
+                      </select>
+
+                    </div>
+
+                    {% if product.variants.size > 1 %}
+
+                      <!-- Variant swatches. -->
+                      {% for option in product.options %}
+                      <div class="swatch__wrap">
+                        {% include 'swatch' with option %}
+                      </div>
+                      {% endfor %}
+
+                    {% endif %}
+
+                  </div>
+
+                  <div class="grid__col">
+
+                    <div class="msg-box msg-box--negative" id="soldOutMsg">
+                      <p class="msg-box__msg">Sorry, this combination has sold out.</p>
+                    </div>
+
+                  </div>
+
+                <div class="grid__col grid__col--flex xs-1-4 s-1-3">
+
+                  <div class="form__field">
+
+                    <label for="Quantity">Quantity</label>
+                    <input type="number" id="Quantity" name="quantity" value="1" min="1" class="quantity-selector">
+
+                  </div>
+
+                </div>
+
+                <div class="grid__col grid__col--flex xs-3-4 s-2-3">
+                  <div class="form__item btn-align-wrap">
+
+                    <button type="submit" id="AddToCart" name="add" class="btn btn--large btn--full">Add to basket</button>
+
+                  </div>
+                </div>
+
+              </div>
+
+            </form>
+
+          </div>
+
+
+            <h2 class="product-description__subtitle">Description</h2>
+
+
+            <div class="rte" itemprop="description">
+              {{ product.description }}
+            </div>
+
+
+            <h2 class="product-description__subtitle">Share this</h2>
+
+            <div class="product-description__body">
+  						<span class="meta__data">
+                <ul class="share">
+              	  <li class="share__item share__item--pin">
+                  	{% include 'pin-button' %}
+                  </li>
+              	    <li class="share__item share__item--facebook">
+                  	{% include 'facebook-button' %}
+                  </li>
+                  <li class="share__item share__item--twitter">
+                    {% include 'twitter-button' %}
+                  </li>
+            	    <li class="share__item share__item--email">
+                  	{% include 'email-button' %}
+                  </li>
+            	   </ul>
+              </span>
+  					</div>
+
+
+          </div>
+
         </div>
-
-        {% comment %}
-
-        A drop down for each variant
-        Requires JS at bottom to to update the value of the hidden product-select field
-        Would also need to update the price accordingly
-
-        {% endcomment %}
-
-        {% comment %}
-
-        <div class="form__item">
-
-        {% if product.variants.size > 1 %}
-        		{% if product.options[0] %}
-        			{% assign used = '' %}
-        			<label for="select-one">{{ product.options[0] }}</label>
-        			<select id='select-one' onchange="letsDoThis()">
-        				{% for variant in product.variants %}
-        					{% unless used contains variant.option1 %}
-        						<option value="{{ variant.option1 }}">{{ variant.option1 }}</option>
-        						{% capture used %}{{ used }} {{ variant.option1 }}{% endcapture %}
-        					{% endunless %}
-        				{% endfor %}
-        			</select>
-        		{% endif %}
-        		{% if product.options[1] %}
-        			{% assign used = '' %}
-        			<label for="select-one">{{ product.options[1] }}</label>
-        			<select id='select-two' onchange="letsDoThis()">
-        				{% for variant in product.variants %}
-        					{% unless used contains variant.option2 %}
-        						<option value="{{ variant.option2 }}">{{ variant.option2 }}</option>
-        						{% capture used %}{{ used }} {{ variant.option2 }}{% endcapture %}
-        					{% endunless %}
-        				{% endfor %}
-        			</select>
-        		{% endif %}
-        		{% if product.options[2] %}
-        			{% assign used = '' %}
-        			<label for="select-one">{{ product.options[2] }}</label>
-        			<select id='select-three' onchange="letsDoThis()">
-        				{% for variant in product.variants %}
-        					{% unless used contains variant.option3 %}
-        						<option value="{{ variant.option3 }}">{{ variant.option3 }}</option>
-        						{% capture used %}{{ used }} {{ variant.option3 }}{% endcapture %}
-        					{% endunless %}
-        				{% endfor %}
-        			</select>
-        		{% endif %}
-        	{% endif %}
-        	<input type="hidden"name="id" id="product-select" value="{{ product.variants.first.id }}" />
-
-        </div>
-
-        <script>
-        //  REQUIRED (SOMEWHERE) TO USE MULTIPLE DROP DOWNS
-        	function letsDoThis() {
-        		{% if product.options[0] %}var opt1 = document.getElementById('select-one').value;{% endif %}
-        		{% if product.options[1] %}var opt2 = document.getElementById('select-two').value;{% endif %}
-        		{% if product.options[2] %}var opt3 = document.getElementById('select-three').value;{% endif %}
-        		var id = '';
-        		{% for v in product.variants %}
-        		if(opt1=="{{ v.option1 }}"{% if product.options[1] %} && opt2=="{{ v.option2 }}"{% endif %}{% if product.options[2] %} && opt3=="{{ v.option3 }}"{% endif %}) {
-        				var id = {{ v.id }};
-        				var price = "{{ v.price | money }}";
-        			}
-        		{% endfor %}
-        		if(id!='') {
-        			document.getElementById('product-select').value = id;
-        			document.getElementById('price').innerHTML = price;
-        		} else {
-        			document.getElementById('product-select').value = '';
-        			document.getElementById('price').innerHTML = 'Unavailable';
-        		}
-
-        	}
-        </script>
-
-        {% endcomment %}
-
-        <div class="form__item">
-
-          <label for="Quantity">Quantity</label>
-          <input type="number" id="Quantity" name="quantity" value="1" min="1" class="quantity-selector">
-
-        </div>
-
-        <div class="form__item">
-
-          <button type="submit" id="AddToCart" name="add" class="btn">Add to basket</button>
-
-        </div>
-
-      </form>
 
     </div>
 
   </div>
-
-
 
 </div>
