@@ -1,0 +1,30 @@
+
+<header class="page__header">
+
+  <h1 class="page__title">All Collections</h1>
+
+</header>
+
+<div class="grid grid--tight grid--flex">
+
+  {% for link in linklists.all-collections.links %}
+
+  {% assign collection = link.object %}
+
+    <div class="grid__col m-2-4">
+
+      <a href="{{ link.url }}" class="">
+    		<div class="">
+    			<img src="{{ collection.image.src | img_url: 'large' }}" alt="{{ collection.title }}">
+    		</div>
+    		<div class="">
+    			<h2 class="">{{ link.title }}</h2>
+          <p class="">View the collection</p>
+    		</div>
+    	</a>
+
+    </div>
+
+  {% endfor %}
+
+</div>

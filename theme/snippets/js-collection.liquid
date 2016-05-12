@@ -1,0 +1,18 @@
+  <script type="text/javascript">
+    (function($) {
+
+      // Create an event listener to auto-submit the collection filter form on select change.
+      $(document).on('change', '[data-update-collection]', function(e) {
+        $(this).closest('form').submit();
+      });
+      // Override the form submit to fetch via Ajax and update history.
+      $(document).on('submit', '#collection-form', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('action'), data = $(this).serialize();
+        $('main').load(url + ' main', data, function() {
+          window.history.pushState({}, null, url + '?' + data);
+        });
+      });
+
+    }(jQuery));
+  </script>

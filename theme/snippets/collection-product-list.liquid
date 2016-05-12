@@ -1,0 +1,20 @@
+<div class="grid grid--tight grid--flex">
+
+  {% for product in collection-product-list limit: limit_count %}
+
+    <div class="grid__col grid__col--flex s-1-2 m-1-4">
+
+      <a href="{{ product.url | within: collection }}" class="tile tile--product">
+    		<div class="tile__img">
+    			<img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+    		</div>
+    		<header class="tile__header">
+    			<h2 class="tile__title">{{ product.title }}</h2>
+          <p class="tile__price">{{ product.price | money}}</p>
+    		</header>
+    	</a>
+
+    </div>
+  {% endfor %}
+
+</div>
