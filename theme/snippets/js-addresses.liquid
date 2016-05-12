@@ -1,0 +1,45 @@
+<script>
+
+// Initialize observers on address selectors
+new Shopify.CountryProvinceSelector('AddressCountryNew', 'AddressProvinceNew', {
+  hideElement: 'AddressProvinceContainerNew'
+});
+
+// Setup province selector on each customer address
+{% for address in customer.addresses %}
+
+  new Shopify.CountryProvinceSelector('AddressCountry_{{ address.id }}', 'AddressProvince_{{ address.id }}', {
+    hideElement: 'AddressProvinceContainer_{{ address.id }}'}
+  );
+{% endfor %}
+
+// Modified contents of customer_area.js (global asset)
+Shopify.CustomerAddress = {
+  toggleForm: function(id) {
+    var editEl = document.getElementById('EditAddress_'+id);
+    editEl.style.display = editEl.style.display == 'none' ? '' : 'none';
+    jQuery('html').toggleClass('address-form-is-active');
+    return false;
+  },
+
+  toggleNewForm: function() {
+    var el = document.getElementById('AddAddress');
+    el.style.display = el.style.display == 'none' ? '' : 'none';
+    jQuery('html').toggleClass('address-form-is-active');
+    return false;
+  },
+
+  destroy: function(id, confirm_msg) {
+    if (confirm(confirm_msg || "Are you sure you wish to delete this address?")) {
+      Shopify.postLink('/account/addresses/'+id, {'parameters': {'_method': 'delete'}});
+    }
+  }
+};
+
+
+  (function($) {
+    $('#AddAddress').hide();
+    $('.js-edit-address-form').hide();
+  })(jQuery)
+
+  </script>
