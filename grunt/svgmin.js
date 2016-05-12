@@ -11,7 +11,7 @@ module.exports = {
 			src: [
 				"**/*.svg"
 			],
-			dest: "<%= resources %>/assets"
+			dest: "<%= app %>/assets"
 		}]
 	}
 };
