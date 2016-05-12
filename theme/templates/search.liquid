@@ -1,47 +1,34 @@
-<h1>{{ search.results_count }} products found for {{ search.terms | escape }}</h1>
+<header class="page__header">
+
+  <h1 class="page__title">{% if search.results_count > 0 %}{{ search.results_count }}{% else %}No{% endif %} product{% unless search.results_count == 1 %}s{% endunless %} found for {{ search.terms | escape }}</h1>
+
+</header>
 
 {% if search.results_count > 0 %}
 
-  {% for product in search.results %}
+  <div class="grid grid--tight grid--flex">
 
-    <div class="grid__col s-1-2 m-1-3 l-1-4">
+    {% for product in search.results %}
 
-      <a href="{{ product.url | within: collection }}" class="grid__image">
-        <img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
-      </a>
+      <div class="grid__col grid__col--flex xs-1-2 m-1-3 l-1-4">
 
-      <p class="h6">
-        <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
-        <span>{{ product.price | money}}</span>
-      </p>
+        <a href="{{ product.url | within: collection }}" class="tile tile--product">
+      		<div class="tile__img">
+      			<img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+      		</div>
+      		<div class="tile__header">
+      			<h2 class="tile__title">{{ product.title }}</h2>
+            <p class="tile__price">{{ product.price | money}}</p>
+      		</div>
+      	</a>
 
-      <p>
+      </div>
+    {% endfor %}
 
-        {% assign search_tag_string = "" %}
-
-        {% for tag in product.tags %}
-         {{ search_tag_string | append: tag }}
-
-         {{ search_tag_string | append: ',' }}
-
-         {% assign search_tag = search_tag_string | split: ',' %}
-
-          {{ search_tag.lastx }}
-
-        {% endfor %}
-
-
-
-      </p>
-
-    </div>
-
-  {% endfor %}
+  </div>
 
 {% else %}
 
-  <p>
-    ¯\_(ツ)_/¯
-  </p>
+  <p>Sorry, we couldn't find any products matching your search</p>
 
 {% endif %}
