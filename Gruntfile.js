@@ -9,9 +9,9 @@ module.exports = function(grunt) {
 			src: 'grunt/**/*'
 		},
     pkg: grunt.file.readJSON('package.json'),
-		app: 'YOUR_THEME_NAME',
+		app: 'bluegg',
 		resources: 'theme',
-    banner: '//YOUR_THEME_NAME\n' +
+    banner: '//bluegg\n' +
       '// version: <%= pkg.version %>\n' +
       '// author: <%= pkg.author %>\n' +
       '// license: <%= pkg.licenses[0].type %>\n'

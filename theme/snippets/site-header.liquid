@@ -1,39 +1,26 @@
-<header class="site-header">
-
-
-  <div class="wrapper">
-
-    {% if shop.customer_accounts_enabled %}
-      {% if customer %}
-        <a href="/account">My Account</a> | {{ 'Log out' | customer_logout_link }} |
-      {% else %}
-        {{ 'Log in' | customer_login_link }} |
-      {% endif %}
-
-      <a href="/cart" class="site-header__cart">
-        Basket
-        {% unless cart.item_count == 0 %}
-        <span class="badge">{{cart.item_count}}</span>
-        {% endunless %}
-      </a>
-    {% endif %}
-
-  </div>
-
+<header class="site-header section">
 
   <div class="wrapper">
 
-    <a href="/" class="logo">
-     {{ 'logo.svg' | asset_url | img_tag: 'Logo Alt text', 'logo__img' }}
+    <div class="site-header__wrap">
+
+    <a href="/" class="site-header__logo">
+     {{ 'logo.svg' | asset_url | img_tag: 'Character.com - Dress your imagination', 'site-header__logo-img' }}
     </a>
-
-    <button class="btn-menu is-visible js-nav-toggle"><span class="btn-menu-txt">menu</span></button>
 
     {% include 'search-bar' %}
 
-  </div>
+    {% if shop.customer_accounts_enabled %}
 
-  {% include 'site-nav' %}
+      {% include 'customer-nav' %}
+
+    {% endif %}
+
+    {% include 'site-nav' %}
+
+    </div>
+
+  </div>
 
 </header>
 <!-- / .site-header -->

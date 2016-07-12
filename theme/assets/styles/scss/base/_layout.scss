@@ -4,7 +4,7 @@
 	margin: 0 auto;
 	position: relative;
 	padding: 0 1em;
-	
+
 	@include mq($m) {
 		padding: 0 2em;
 	}

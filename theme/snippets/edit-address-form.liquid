@@ -1,0 +1,76 @@
+<div id="EditAddress_{{ address.id }}" class="js-edit-address-form address-form js-parsley-validate">
+
+	{% form 'customer_address', address %}
+
+		<div class="form__row">
+			<label class="form__label" for="AddressFirstName_{{ form.id }}">First Name</label>
+			<input type="text" id="AddressFirstName_{{ form.id }}" class="form__field" name="address[first_name]" value="{{ form.first_name }}" autocapitalize="words"
+			data-parsley-required-message="{{settings.form_error_firstname_required}}" required>
+		</div>
+
+		<div class="form__row">
+			<label class="form__label" for="AddressLastName_{{ form.id }}">Last Name</label>
+			<input type="text" id="AddressLastName_{{ form.id }}" class="form__field" name="address[last_name]" value="{{ form.last_name }}" autocapitalize="words"
+			data-parsley-required-message="{{settings.form_error_lastname_required}}" required>
+
+		</div>
+
+		<div class="form__row">
+			<label class="form__label" for="AddressCompany_{{ form.id }}">Company (optional)</label>
+			<input type="text" id="AddressCompany_{{ form.id }}" class="form__field" name="address[company]" value="{{ form.company }}" autocapitalize="words">
+
+		</div>
+		<div class="form__row">
+			<label class="form__label" for="AddressAddress1_{{ form.id }}">Address Line 1</label>
+			<input type="text" id="AddressAddress1_{{ form.id }}" class="form__field" name="address[address1]" value="{{ form.address1 }}" autocapitalize="words" data-parsley-required-message="{{settings.form_error_address_required}}" required>
+
+		</div>
+		<div class="form__row">
+			<label class="form__label" for="AddressAddress2_{{ form.id }}">Address Line 2 (optional)</label>
+			<input type="text" id="AddressAddress2_{{ form.id }}" class="form__field" name="address[address2]" value="{{ form.address2 }}" autocapitalize="words">
+
+		</div>
+		<div class="form__row">
+			<label class="form__label" for="AddressCity_{{ form.id }}">City</label>
+			<input type="text" id="AddressCity_{{ form.id }}" class="form__field" name="address[city]" value="{{ form.city }}" autocapitalize="words" data-parsley-required-message="{{settings.form_error_address_required}}"  required>
+
+		</div>
+		<div class="form__row">
+			<label class="form__label" for="AddressCountry_{{ form.id }}">Country</label>
+			<div class="custom-select">
+				<select id="AddressCountry_{{ form.id }}" class="form__field custom-select__field" name="address[country]" data-default="{{ form.country }}" data-parsley-required-message="{{settings.form_error_country_required}}"  required>{{ country_option_tags }}</select>
+			</div>
+		</div>
+
+		<div id="AddressProvinceContainer_{{ form.id }}" class="form__row">
+			<label class="form__label" for="AddressProvince_{{ form.id }}">Province</label>
+			<div class="custom-select">
+				<select id="AddressProvince_{{ form.id }}" class="form__field custom-select__field" name="address[province]" data-default="{{ form.province }}"  data-parsley-required-message="{{settings.form_error_province_required}}" requried></select>
+			</div>
+		</div>
+
+		<div class="form__row">
+			<label class="form__label" for="AddressZip_{{ form.id }}">Post Code</label>
+			<input type="text" id="AddressZip_{{ form.id }}" class="form__field" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters" data-parsley-required-message="{{settings.form_error_postcode_required}}"  required>
+		</div>
+
+		<div class="form__row">
+			<label class="form__label" for="AddressPhone_{{ form.id }}">Telephone (optional)</label>
+			<input type="tel" data-parsley-type-message="{{settings.form_error_tel}}"  id="AddressPhone_{{ form.id }}" class="form__field" name="address[phone]" value="{{ form.phone }}">
+		</div>
+
+		<div class="form__row">
+			{{ form.set_as_default_checkbox }}
+			<label class="form__label form__label--inline" for="address_default_address_{{ form.id }}" class="inline">Set as default</label>
+		</div>
+
+
+		<div class="form__action">
+			<input type="submit" class="btn btn--secondary js-modal-enter-btn" value="Update">
+
+			<button type="button" class="fr cta js-modal-cancel-btn">Cancel</a>
+		</div>
+
+</div>
+
+{% endform %}

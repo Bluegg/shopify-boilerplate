@@ -15,19 +15,20 @@ new Shopify.CountryProvinceSelector('AddressCountryNew', 'AddressProvinceNew', {
 
 // Modified contents of customer_area.js (global asset)
 Shopify.CustomerAddress = {
-  toggleForm: function(id) {
-    var editEl = document.getElementById('EditAddress_'+id);
-    editEl.style.display = editEl.style.display == 'none' ? '' : 'none';
-    jQuery('html').toggleClass('address-form-is-active');
-    return false;
-  },
 
-  toggleNewForm: function() {
-    var el = document.getElementById('AddAddress');
-    el.style.display = el.style.display == 'none' ? '' : 'none';
-    jQuery('html').toggleClass('address-form-is-active');
-    return false;
-  },
+  // toggleForm: function(id) {
+  //   var editEl = document.getElementById('EditAddress_'+id);
+  //   editEl.style.display = editEl.style.display == 'none' ? '' : 'none';
+  //   jQuery('html').toggleClass('address-form-is-active');
+  //   return false;
+  // },
+	//
+  // toggleNewForm: function() {
+  //   var el = document.getElementById('AddAddress');
+  //   el.style.display = el.style.display == 'none' ? '' : 'none';
+  //   jQuery('html').toggleClass('address-form-is-active');
+  //   return false;
+  // },
 
   destroy: function(id, confirm_msg) {
     if (confirm(confirm_msg || "Are you sure you wish to delete this address?")) {
@@ -38,8 +39,8 @@ Shopify.CustomerAddress = {
 
 
   (function($) {
-    $('#AddAddress').hide();
-    $('.js-edit-address-form').hide();
+    // $('#AddAddress').hide();
+    // $('.js-edit-address-form').hide();
   })(jQuery)
 
   </script>

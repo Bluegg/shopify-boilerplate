@@ -1,0 +1,60 @@
+<script>
+		(function($) {
+		  // Current Ajax request.
+		  var currentAjaxRequest = null;
+		  // Grabbing all search forms on the page, and adding a .search-results list to each.
+		  var searchForms = $('form[action="/search"]').css('position','relative').each(function() {
+		    // Grabbing text input.
+		    var input = $(this).find('input[name="q"]');
+		    // Adding a list for showing search results.
+		    var offSet = input.position().top + input.innerHeight();
+		    $('<ul class="autocomplete__list"></ul>').css( { 'top': offSet } ).appendTo($(this));
+		    // Listening to keyup and change on the text field within these search forms.
+		    input.attr('autocomplete', 'off').on('keyup change', function() {
+		      // What's the search term?
+		      var term = $(this).val();
+		      // What's the search form?
+		      var form = $(this).closest('form');
+		      // What's the search URL?
+		      var searchURL = '/search?type=product&q=title:' + term + '*';
+		      // What's the search results list?
+		      var resultsList = form.find('.autocomplete__list');
+		      // If that's a new term and it contains at least 3 characters.
+		      if (term.length > 3 && term != $(this).attr('data-old-term')) {
+		        // Saving old query.
+		        $(this).attr('data-old-term', term);
+		        // Killing any Ajax request that's currently being processed.
+		        if (currentAjaxRequest != null) currentAjaxRequest.abort();
+		        // Pulling results.
+		        currentAjaxRequest = $.getJSON(searchURL + '&view=json', function(data) {
+		          // Reset results.
+		          resultsList.empty();
+		          // If we have no results.
+		          if(data.results_count == 0) {
+		            resultsList.removeClass('is-active');
+		          } else {
+		            // If we have results.
+		            $.each(data.results, function(index, item) {
+		              var link = $('<a></a>').addClass('autocomplete__link media').attr('href', item.url);
+		              link.append('<figure class="autocomplete__fig media__fig"><img src="' + item.thumbnail + '" class="media__img" /></figure>');
+		              link.append('<div class="media__body"><span class="title tile__title">' + item.title + '</span><span class="title tile__price">' + item.price + '</span></div>');
+		              link.wrap('<li class="autocomplete__item"></li>');
+		              resultsList.append(link.parent());
+		            });
+		            // The Ajax request will return at the most 6 results.
+		            // If there are more than 6, let's link to the search results page.
+		            if(data.results_count > 6) {
+		              resultsList.append('<li class="autocomplete__item"><a class="autocomplete__link autocomplete__link--see-all" href="' + searchURL + '">See all results (' + data.results_count + ')</a></li>');
+		            }
+		            resultsList.addClass('is-active');
+		          }
+		        });
+		      }
+		    });
+		  });
+		  // Clicking outside makes the results disappear.
+		  $('body').on('click', function(){
+		    $('.autocomplete__list').removeClass('is-active');
+		  });
+		})(jQuery);
+</script>

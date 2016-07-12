@@ -1,0 +1,13 @@
+.tabs {
+	&__panel {
+		.is-initialized & {
+			display: inherit;
+		}
+		&.is-hidden {
+			display: none;
+		}
+		&:focus {
+			outline: 0;
+		}
+	}
+}

@@ -1,0 +1,64 @@
+<div id="AddAddress" class="address-form">
+  {% form 'customer_address', customer.new_address %}
+<!--
+    <button type="button" class="btn btn--hollow btn-close fr" onclick="Shopify.CustomerAddress.toggleNewForm(); return false;">
+      <span class="visuallyhidden">Close</span>
+    </button> -->
+
+    <div class="form__row">
+      <label for="AddressFirstNameNew" class="form__label">First Name</label>
+      <input type="text" id="AddressFirstNameNew" class="form__field" name="address[first_name]" value="{{ form.first_name }}" autocapitalize="words" data-parsley-required-message="{{settings.form_error_firstname_required}}" required>
+    </div>
+    <div class="form__row">
+      <label for="AddressLastNameNew" class="form__label">Last Name</label>
+      <input type="text" id="AddressLastNameNew" class="form__field" name="address[last_name]" value="{{ form.last_name }}" autocapitalize="words" data-parsley-required-message="{{settings.form_error_lastname_required}}" required>
+    </div>
+    <div class="form__row">
+      <label for="AddressCompanyNew" class="form__label">Company</label>
+      <input type="text" id="AddressCompanyNew" class="form__field" name="address[company]" value="{{ form.company }}" autocapitalize="words">
+    </div>
+    <div class="form__row">
+      <label for="AddressAddress1New" class="form__label">Address Line 1</label>
+      <input type="text" id="AddressAddress1New" class="form__field" name="address[address1]" value="{{ form.address1 }}" autocapitalize="words" data-parsley-required-message="{{settings.form_error_address_required}}" required>
+    </div>
+    <div class="form__row">
+      <label for="AddressAddress2New" class="form__label">Address Line 2</label>
+      <input type="text" id="AddressAddress2New" class="form__field" name="address[address2]" value="{{ form.address2 }}" autocapitalize="words">
+    </div>
+
+    <div class="form__row">
+      <label for="AddressCityNew" class="form__label">City</label>
+      <input type="text" id="AddressCityNew" class="form__field" name="address[city]" value="{{ form.city }}" autocapitalize="words" data-parsley-required-message="{{settings.form_error_city_required}}" required>
+    </div>
+    <div class="form__row">
+      <label for="AddressCountryNew" class="form__label">Country</label>
+      <select id="AddressCountryNew" class="form__field" name="address[country]" data-default="{{ form.country }}" data-parsley-required-message="{{settings.form_error_country_required}}" required>{{ country_option_tags }}</select>
+    </div>
+    <div class="form__row" id="AddressProvinceContainerNew">
+      <label for="AddressProvinceNew" class="form__label">Province</label>
+				<div class="custom-select">
+	      <select id="AddressProvinceNew" class="form__field custom-select__field" name="address[province]" data-default="{{ form.province }}" data-parsley-required-message="{{settings.form_error_province_required}}" required></select>
+				</div>
+    </div>
+    <div class="form__row">
+      <label for="AddressZipNew" class="form__label">Post Code</label>
+      <input type="text" id="AddressZipNew" class="form__field" name="address[zip]" value="{{ form.zip }}" autocapitalize="characters" data-parsley-required-message="{{settings.form_error_postcode_required}}" required>
+    </div>
+    <div class="form__row">
+      <label for="AddressPhoneNew" class="form__label">Phone number</label>
+      <input type="tel" data-parsley-type-message="{{settings.form_error_tel}}"  id="AddressPhoneNew" class="form__field" name="address[phone]" value="{{ form.phone }}">
+    </div>
+    <p>
+      {{ form.set_as_default_checkbox }}
+      <label for="address_default_address_new" class="inline">Set as default</label>
+    </p>
+
+    <div class="form__row">
+      <input type="submit" class="btn btn--primary js-modal-enter-btn" value="Add">
+
+      <a href="#" class="btn btn--secondary fr js-modal-cancel-btn">Cancel</a>
+    </div>
+
+    <hr>
+  {% endform %}
+</div>

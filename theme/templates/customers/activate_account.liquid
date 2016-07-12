@@ -1,39 +1,21 @@
-<header class="page__header">
-  <h1 class="page__title">Activate your account</h1>
-</header>
+<section class="section">
 
-{% comment %}
-  This form must use 'activate_customer_password'
-{% endcomment %}
+  <div class="wrapper">
 
-<div class="grid grid--center">
+    <div class="grid grid--center grid--align-mid grid--flex">
 
-  <div class="grid__col m-2-3 l-1-2">
-  {% form 'activate_customer_password' %}
+      <div class="grid__col  l-2-3">
 
-    {% if form.errors %}
-    <div class="msg-box msg-box--negative">
-      {{ form.errors | default_errors }}
+
+
+            {% include 'activate-account-form' %}
+
+        
+
+      </div>
+
     </div>
-    {% endif %}
-
-    <div class="form__field">
-      <label for="CustomerPassword" class="">Password</label>
-      <input type="password" value="" name="customer[password]" id="CustomerPassword" class="" placeholder="password">
-    </div>
-
-    <div class="form__field">
-      <label for="CustomerPasswordConfirmation" class="">Please confirm your password</label>
-      <input type="password" value="" name="customer[password_confirmation]" id="CustomerPasswordConfirmation" class="" placeholder="password">
-    </div>
-
-    <div class="form__field">
-      <input type="submit" class="btn fr" value="Sign up">
-      <input type="submit" class="btn--secondary" name="decline" value="Cancel">
-    </div>
-
-  {% endform %}
 
   </div>
 
-</div>
+</section>

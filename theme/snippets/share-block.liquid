@@ -1,0 +1,52 @@
+{% assign current_url = '' %}
+
+{% case template %}
+{% when 'page' %}
+{% assign current_url = page.url %}
+{% when 'blog' %}
+{% assign current_url = blog.url %}
+{% when 'article' %}
+{% assign current_url = blog.url %}
+{% when 'collection' %}
+{% assign current_url = collection.url %}
+{% when 'product' %}
+{% assign current_url = product.url %}
+{% endcase %}
+
+<div class="share-block share-block--product">
+  <h2 class="share-block__title">{{ settings.social_share_label}}</h2>
+
+  <ul class="share-block__list">
+
+    <li class="share-block__item">
+      <a href="http://www.facebook.com/sharer.php?u={{ shop.url }}{{ current_url }}" target="_blank" class="share-block__link icon icon--sml facebook">
+        <span class="visuallyhidden">Facebook</span>
+      </a>
+    </li>
+    <!-- /.share-block__item -->
+
+		{% if template == 'product' %}
+    <li class="share-block__item">
+      <a href="//pinterest.com/pin/create/button/?url={{ shop.url }}{{ product.url }}&amp;media=http:{{ product | img_url: '1024x1024' | split: '?' | first }}&amp;description={{ product.title | strip_html | truncate: 200, '' | url_param_escape }}{% for tag in product.tags limit: 3 %}{{ tag | replace: ' ', '-' | prepend: ' #' | url_param_escape }}{% endfor %}" target="_blank" class="share-block__link icon icon--sml pinterest">
+        <span class="visuallyhidden">Pinterest</span>
+      </a>
+    </li>
+		{% endif %}
+
+    <!-- /.share-block__item -->
+    <li class="share-block__item">
+      <a href="http://twitter.com/intent/tweet?url={{ shop.url }}{{ current_url }}&text={{ settings.social_twitter_share_text | replace: ' ', '+' }}&via={{ settings.social_twitter_username }}" target="_blank" class="share-block__link icon icon--sml twitter">
+        <span class="visuallyhidden">Twitter</span>
+      </a>
+    </li>
+    <!-- /.share-block__item -->
+    <li class="share-block__item">
+      <a href="mailto:?subject={{ settings.social_email_share_subject }}&body={{ settings.social_email_share_body }}%0A{{ shop.url }}{{ current_url }}" class="share-block__link icon icon--sml mail">
+        <span class="visuallyhidden">Email</span>
+      </a>
+    </li>
+    <!-- /.share-block__item -->
+
+  </ul>
+
+</div>

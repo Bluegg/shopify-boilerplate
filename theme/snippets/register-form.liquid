@@ -1,0 +1,44 @@
+<div class="form js-parsley-validate">
+
+  {% form 'create_customer' %}
+
+  {% if form.errors %}
+  <div class="msg-box msg-box--negative">
+    {{ form.errors | default_errors }}
+  </div>
+  {% endif %}
+
+  <h1 class="title title--sub">{{ settings.text_register_title }}</h1>
+
+  <p>{{ settings.text_register_text }}</p>
+
+  <div class="form__row">
+    <label class="form__label" for="FirstName">{{ settings.form_firstname_label }}</label>
+    <input type="text" name="customer[first_name]" id="FirstName" class="form__field " placeholder="John" required {% if form.first_name %}value="{{ form.first_name }}"{% endif %} autocapitalize="words" data-parsley-required-message="{{settings.form_error_firstname_required}}" autofocus>
+  </div>
+
+  <div class="form__row">
+    <label class="form__label" for="LastName">{{ settings.form_lastname_label }}</label>
+    <input type="text" name="customer[last_name]" id="LastName" class="form__field " placeholder="Appleseed" required {% if form.last_name %}value="{{ form.last_name }}"{% endif %} autocapitalize="words" data-parsley-required-message="{{settings.form_error_lastname_required}}">
+  </div>
+
+  <div class="form__row">
+    <label class="form__label" for="Email">{{ settings.form_email_label }}</label>
+    <input type="email" data-parsley-required-message="{{settings.form_error_email_required}}" data-parsley-email-message="{{settings.form_error_email}}" name="customer[email]" id="Email" class="form__field {% if form.errors contains 'email' %} form__input--error{% endif %}" placeholder="email@yoursite.com" {% if form.email %} value="{{ form.email }}"{% endif %} autocorrect="off" autocapitalize="off" required>
+  </div>
+
+  <div class="form__row">
+    <label class="form__label" for="CreatePassword">{{ settings.form_password_label }}</label>
+    <input type="password" data-parsley-required-message="{{settings.form_error_password_required}}" name="customer[password]" id="CreatePassword" class="form__field {% if form.errors contains 'password' %} form__input--error{% endif %}" placeholder="Password" required>
+  </div>
+
+  <div class="form__row">
+    <input type="submit" value="{{ settings.form_register_btn_text }}" class="btn btn--primary btn--full">
+  </div>
+
+  <div class="form__row">
+    <a href="{{ shop.url }}"  class="centered">{{ settings.form_register_back_text }}</a>
+  </div>
+
+  {% endform %}
+</div>

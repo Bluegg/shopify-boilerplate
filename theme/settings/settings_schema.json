@@ -1,1 +1,368 @@
-[]
+[{
+	"name": "Homepage",
+	"settings": [{
+			"type": "text",
+			"id": "homepage_page_title",
+			"label": "Homepage Title",
+			"default": "Title",
+			"info": "Text after site name in the page title (HTML)"
+		}
+	]
+}, {
+	"name": "Header Labels",
+	"settings": [{
+		"type": "text",
+		"id": "label_account_link",
+		"label": "Account Link Label",
+		"default": "Your account"
+	}, {
+		"type": "text",
+		"id": "label_login_link",
+		"label": "Log in Label",
+		"default": "Sign out"
+	}, {
+		"type": "text",
+		"id": "label_logout_link",
+		"label": "Log out Label",
+		"default": "Sign out"
+	}, {
+		"type": "text",
+		"id": "label_cart_link",
+		"label": "Cart Link Label",
+		"default": "Your cart"
+	}, {
+		"type": "text",
+		"id": "label_searchbar_placeholder",
+		"label": "Searchbar Placeholder Label",
+		"default": "Search"
+	}, {
+		"type": "text",
+		"id": "label_searchbar_label",
+		"label": "Searchbar Label Label",
+		"default": "Search store",
+		"info": "This is hidden in current theme, but is required for assistive technology"
+	}]
+}, {
+	"name": "General Forms",
+	"settings": [{
+			"type": "text",
+			"id": "form_fullname_label",
+			"label": "Name Label",
+			"default": "Your name"
+		}, {
+			"type": "text",
+			"id": "form_firstname_label",
+			"label": "First Name Label",
+			"default": "Your firstname"
+		}, {
+			"type": "text",
+			"id": "form_lastname_label",
+			"label": "Last Name Label",
+			"default": "Your lastname"
+		}, {
+			"type": "text",
+			"id": "form_phone_label",
+			"label": "Phone Label",
+			"default": "Your telephone number"
+		}, {
+			"type": "text",
+			"id": "form_email_label",
+			"label": "Email Label",
+			"default": "Your email address"
+		}, {
+			"type": "text",
+			"id": "form_password_label",
+			"label": "Password Label",
+			"default": "Password"
+		}, {
+			"type": "text",
+			"id": "form_confirmpassword_label",
+			"label": "Confirm Password Label",
+			"default": "Confirm your password"
+		}, {
+			"type": "text",
+			"id": "form_cancel_btn",
+			"label": "Cancel Button Text",
+			"default": "Cancel"
+		}
+
+	]
+}, {
+	"name": "Form Error Messages",
+	"settings": [{
+		"type": "text",
+		"id": "form_error_name_required",
+		"label": "If name is required and not entered error",
+		"default": "Please enter your name",
+		"info": "The error shown when a required name is missing"
+	}, {
+		"type": "text",
+		"id": "form_error_firstname_required",
+		"label": "If first name is required and not entered error",
+		"default": "Please enter your first name",
+		"info": "The error shown when a required first name is missing"
+	}, {
+		"type": "text",
+		"id": "form_error_lastname_required",
+		"label": "If last name is required and not entered error",
+		"default": "Please enter your last name",
+		"info": "The error shown when a required last name is missing"
+	}, {
+		"type": "text",
+		"id": "form_error_password_required",
+		"label": "If password is required and not entered error",
+		"default": "Please enter your password",
+		"info": "The error shown when a required password is missing"
+	}, {
+		"type": "text",
+		"id": "form_error_tel",
+		"label": "Generic telephone number error",
+		"default": "Please check your telephone number",
+		"info": "The error shown when not a valid telephone number"
+	}, {
+		"type": "text",
+		"id": "form_error_tel_required",
+		"label": "If tel is required and not entered error",
+		"default": "Please enter your telephone number",
+		"info": "The error shown when a required telephone number is missing"
+	}, {
+		"type": "text",
+		"id": "form_error_email",
+		"label": "Generic email address error",
+		"default": "Please check your email address",
+		"info": "The error shown when not a valid email address"
+	}, {
+		"type": "text",
+		"id": "form_error_email_required",
+		"label": "If email is required and not entered error",
+		"default": "Please enter your email address",
+		"info": "The error shown when a required email address is missing"
+	}, {
+		"type": "text",
+		"id": "form_error_message_required",
+		"label": "If message is required and not entered error",
+		"default": "Please enter your message",
+		"info": "The error shown when a required message address is missing"
+	}, {
+		"type": "text",
+		"id": "form_error_address_required",
+		"label": "If address is required and not entered error",
+		"default": "Please enter your address",
+		"info": "The error shown when a required address is missing"
+	}, {
+		"type": "text",
+		"id": "form_error_city_required",
+		"label": "If city is required and not entered error",
+		"default": "Please enter your city",
+		"info": "The error shown when a required city is missing"
+	}, {
+		"type": "text",
+		"id": "form_error_country_required",
+		"label": "If country is required and not selected error",
+		"default": "Please select your country",
+		"info": "The error shown when a required country is missing"
+	}, {
+		"type": "text",
+		"id": "form_error_province_required",
+		"label": "If province is required and not selected error",
+		"default": "Please select your province",
+		"info": "The error shown when a required province is missing"
+	}, {
+		"type": "text",
+		"id": "form_error_postcode_required",
+		"label": "If post code is required and not entered error",
+		"default": "Please enter your post code",
+		"info": "The error shown when a required post code is missing"
+	}, {
+		"type": "text",
+		"id": "form_error_signin",
+		"label": "Incorrect password or email on sign in",
+		"default": "Please check your email and password",
+		"info": "The error shown when a user tries to sign in with incorrect info"
+	}]
+}, {
+	"name": "Contact Form",
+	"settings": [{
+			"type": "text",
+			"id": "contact_form_message",
+			"label": "Message Label",
+			"default": "Your message"
+		}, {
+			"type": "text",
+			"id": "contact_form_send",
+			"label": "Contact Form Button Text",
+			"default": "Send"
+		}, {
+			"type": "text",
+			"id": "contact_form_success",
+			"label": "Contact Form Success Message",
+			"default": "Thank you. Your message has been sent and one of our advisors will be in touch"
+		}, {
+			"type": "text",
+			"id": "contact_form_error",
+			"label": "Contact Form Error Message",
+			"default": "Oops. Looks like something's wrong. To submit your form, make the following changes and try again:"
+		}
+	]
+}, {
+	"name": "Social",
+	"settings": [{
+		"type": "text",
+		"id": "social_twitter_username",
+		"label": "Twitter Account"
+	}, {
+		"type": "text",
+		"id": "social_facebook_page",
+		"label": "Facebook Page",
+		"default": "http://www.facebook.com/"
+	}, {
+		"type": "text",
+		"id": "social_share_label",
+		"label": "Share Block Label",
+		"default": "Share this with a friend!"
+	}, {
+		"type": "text",
+		"id": "social_twitter_share_text",
+		"label": "Twitter Share Text",
+		"default": "Check out this great product!"
+	}, {
+		"type": "text",
+		"id": "social_email_share_subject",
+		"label": "Email Share Subject",
+		"default": "Check out this great product from "
+	}, {
+		"type": "text",
+		"id": "social_email_share_body",
+		"label": "Email Share Body",
+		"default": "Check out this great product!",
+		"info": "A link to the product will appear in the next line of the email"
+	}]
+}, {
+	"name": "Footer Labels",
+	"settings": [{
+		"type": "text",
+		"id": "text_footer_smallprint",
+		"label": "Footer smallprint",
+		"default": "© 2016, All Rights Reserved"
+	}, {
+		"type": "text",
+		"id": "text_footer_payments",
+		"label": "Footer payments header",
+		"default": "Payment methods"
+	}]
+}, {
+	"name": "Login & Account Form Labels",
+	"settings": [{
+		"type": "text",
+		"id": "text_login_title",
+		"label": "Title",
+		"default": "Customer sign in"
+	}, {
+		"type": "text",
+		"id": "form_login_btn_text",
+		"label": "Login Button Text",
+		"default": "Sign in"
+	}, {
+		"type": "text",
+		"id": "form_register_back_text",
+		"label": "Back to Shop Link Text",
+		"default": "Back to Shop"
+	}, {
+		"type": "text",
+		"id": "form_forgot_password_text",
+		"label": "Forgot Password Link Text",
+		"default": "Forgotten your password? Reset it here"
+	}, {
+		"type": "text",
+		"id": "text_recover_title",
+		"label": "Recover Password Title",
+		"default": "Recover your password"
+	}, {
+		"type": "text",
+		"id": "text_recover_success",
+		"label": "Recover Password Success message",
+		"default": "Thanks. We've sent you an email to recover your password"
+	}, {
+		"type": "text",
+		"id": "text_recover_text",
+		"label": "Recover Password Text",
+		"default": "Fill in your details and we'll send you a link to reset your password"
+	}, {
+		"type": "text",
+		"id": "text_recover_btn",
+		"label": "Recover Submit button Text",
+		"default": "Recover password"
+	}, {
+		"type": "text",
+		"id": "text_register_title",
+		"label": "Register Title",
+		"default": "Create an account"
+	}, {
+		"type": "text",
+		"id": "text_register_text",
+		"label": "Register Text",
+		"default": "Create an account to manage and track your orders and receive exclusive offers and discounts"
+	}, {
+		"type": "text",
+		"id": "form_register_btn_text",
+		"label": "Register Button Text",
+		"default": "Join now"
+	}, {
+		"type": "text",
+		"id": "text_activate_title",
+		"label": "Activate Account Title",
+		"default": "Activate you account"
+	}, {
+		"type": "text",
+		"id": "text_activate_text",
+		"label": "Activate Account Text",
+		"default": "Nearly there! Just choose a password below and you'll have access to all your orders"
+	}, {
+		"type": "text",
+		"id": "form_activate_btn_text",
+		"label": "Activate Account Button Text",
+		"default": "Join now"
+	}]
+}, {
+	"name": "Blog Labels",
+	"settings": [{
+		"type": "text",
+		"id": "text_blog_recent_title",
+		"label": "Recent Posts Title",
+		"default": "Recent Posts"
+	}, {
+		"type": "text",
+		"id": "text_read_more",
+		"label": "Read More Text",
+		"default": "Read more"
+	}]
+},
+{
+	"name": "Mailchimp",
+	"settings": [
+		{
+			"type": "text",
+			"id": "mailchimp_cta_text",
+			"label": "CTA Button text",
+			"default": "Sign Up"
+		},
+		{
+			"type": "text",
+			"id": "mailchimp_form_title",
+			"label": "Mailchimp Signup Form Title",
+			"default": "Signup to our mailing list"
+		},
+		{
+			"type": "text",
+			"id": "mailchimp_form_msg",
+			"label": "Mailchimp Signup Form Message",
+			"default": "Sign up below and we’ll keep you up to date with the latest products and special offers"
+		},
+		{
+			"type": "text",
+			"id": "mailchimp_form_cta",
+			"label": "Mailchimp Form Submit Button Text",
+			"default": "Sign up to our mailing list"
+		}
+	]
+}]

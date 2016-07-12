@@ -1,0 +1,55 @@
+<div id="CustomerLoginForm" class="form js-parsley-validate">
+  {% form 'customer_login' %}
+
+    <div id="reset-success" class="msg-box msg-box--positive">
+
+      <p class="msg-box__msg">{{ settings.text_recover_success }}</p>
+    </div>
+
+    <h1 class="title title--sub">{{ settings.text_login_title }}</h1>
+
+    {% if form.errors %}
+      <div class="msg-box msg-box--negative is-active"  aria-live="alert">
+        <div class="msg-box__msg">
+          <ul class="msg-box__list">
+              {% for field in form.errors %}
+                {% if field == 'form' %}
+                  <li class="msg-box__item">
+                    {{ form.errors.messages[field] }}
+                	</li>
+                {% else %}
+                <li>
+                  {{ form.errors.translated_fields[field] }} - {{ form.errors.messages[field] }}
+                </li>
+              {% endif %}
+              {% endfor %}
+          </ul>
+        </div>
+      </div>
+    {% endif %}
+
+    <div class="form__row">
+      <label class="form__label" for="CustomerEmail">{{ settings.form_email_label}}</label>
+      <input type="email" data-parsley-required-message="{{settings.form_error_email_required}}" data-parsley-email-message="{{settings.form_error_email}}" name="customer[email]" id="CustomerEmail" class="form__field {% if form.errors contains 'email' %} form__input--error{% endif %}" placeholder="email@yoursite.com" autocorrect="off" autocapitalize="off" autofocus required>
+    </div>
+
+
+    {% if form.password_needed %}
+    <div class="form__row">
+      <label class="form__label" for="CustomerPassword">{{ settings.form_password_label}}</label>
+      <input type="password" data-parsley-required-message="{{settings.form_error_password_required}}" value="" name="customer[password]" id="CustomerPassword" class="form__field {% if form.errors contains 'password' %} form__input--error{% endif %}" placeholder="Password" required>
+    </div>
+    {% endif %}
+
+    <div class="form__row">
+      <input type="submit" class="btn btn--primary btn--full" value="{{ settings.form_login_btn_text }}">
+    </div>
+
+    <div class="form__row">
+      {% if form.password_needed %}
+      <a href="/account/login#recover" {% if template == 'customers/login' %}id="RecoverPassword"{% endif %} class="centered">{{ settings.form_forgot_password_text }}</a>
+      {% endif %}
+    </div>
+
+  {% endform %}
+</div>

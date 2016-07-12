@@ -8,26 +8,32 @@
 
       {% assign displayed_option_values = '' %}
 
-      <h3 class="label">{{ option }}</h3>
+      <h3 class="title title--sub">{{ option }}</h3>
+				{% comment %}
+				{% if option == 'Size' or option == 'size' %}<a href="" class="size-guide-link">Size guide</a>{% endif %}
+				{% endcomment %}
 
-      <div class="swatch__grp">
+				<ol class="swatch__list">
       {% for variant in product.variants %}
 
         {% assign option_value = variant.options[option_index] %}
 
         {% unless displayed_option_values contains option_value %}
+          {% if option == 'Color' or option == 'Colour' or option == 'color' or option == 'colour' %}
 
-          {% if option == 'Color' or option == 'Colour' %}
-
-            <button type="button" class="btn btn--secondary btn--small btn--variant" data-change-option="{{ option_index }}" data-change-value="{{ option_value }}">
-              <span class="swatch" style="width: 1em; height: 1em; display: inline-block; vertical-align: -1px; margin-right: .5em; background-color: {{ option_value | handleize }};"></span>
+							<li class="swatch__item">
+            <button type="button" class="btn btn--swatch{% unless variant.available %} is-disabled{% endunless %}" data-change-option="{{ option_index }}" data-change-value="{{ option_value }}">
+              <span class="swatch" style="background-color: {{ option_value | handleize }};"></span>
               {{ option_value }}</button>
+							</li>
+							{% else %}
+							<li class="swatch__item">
+								<button type="button" data-change-option="{{ option_index }}" data-change-value="{{ option_value }}" class="btn btn--swatch{% unless variant.available %} is-disabled{% endunless %}">
 
-          {% else %}
-
-            <button type="button" data-change-option="{{ option_index }}" data-change-value="{{ option_value }}" class="btn btn--secondary btn--small btn--variant{% unless variant.available %} is-disabled{% endunless %}">
               {{ option_value }}
+
             </button>
+							</li>
 
           {% endif %}
 
@@ -40,7 +46,7 @@
         {% endunless %}
 
       {% endfor %}
-      </div>
+				</ol>
 
     </div>
 

@@ -1,0 +1,102 @@
+<div id="filter" class="filter">
+
+  <h2 class="title title--sub">Filter</h2>
+
+	<button type="button" class="js-filter-close-btn filter__close-btn hidden--m hidden--l hidden--xl hidden--xxl" aria-expanded="true" aria-controls="filter">&times;</button>
+
+	<div class="filter__wrap">
+
+		{% for tag in collection.tags %}
+			{% if tag contains 'example_' %}
+				{% assign exampleFilters = true %}
+				{% break %}
+			{% endif %}
+		{% endfor %}
+
+		{% if exampleFilters %}
+		<div class="filter__block{% if filterby == 'example_' %} is-open{% endif %}">
+	    <div class="filter__title">
+					<h3>Example Filters</h3>
+					<button class="js-filter-block-toggle filter__toggle-btn hidden--m hidden--l hidden--xl hidden--xxl">
+						Toggle Filters
+					</button>
+				</div>
+				<div class="filter__list-wrap" id="filter-age-group">
+		    <ul class="filter__list">
+		      {% for tag in collection.tags %}
+		        {% if tag contains 'example_' %}
+		        {% assign curr_tag = tag | replace: 'example_', '' %}
+		        <li class="filter__item">
+		          {% if current_tags contains tag %}
+		            {{ curr_tag | link_to_remove_tag:tag | replace:'<a title="', '<a class="filter__link is-active" data-link-collection title="' }}
+		          {% else %}
+		            {{ curr_tag | link_to_add_tag:tag | replace:'<a title="', '<a class="filter__link is-inactive" data-link-collection title="' }}
+		          {% endif %}
+		        </li>
+		        {% endif %}
+		      {% endfor %}
+		    </ul>
+				</div>
+	  </div>
+		{% endif %}
+
+
+		{% comment %}
+
+		# BELOW IS HOW WE CAN SORT THE FILTERS #
+		Create array of all sizes
+		Loop over sizes and check if collection contains that tag
+		{% endcomment %}
+
+		{% comment %}
+		{% for tag in collection.tags %}
+			{% if tag contains 'size_' %}
+				{% assign sizeFilters = true %}
+				{% break %}
+			{% endif %}
+		{% endfor %}
+
+
+		{% assign sizeArr = 'size_Age 12 to 18 Months|size_Age 1 to 2 Years|size_Age 2 to 3 Years|size 3 to 4 Years' | split: '|' %}
+		{% if sizeFilters %}
+	  <div class="filter__block{% if filterby == 'size'%} is-open{% endif %}">
+	    <div class="filter__title">
+					<h3>Size</h3>
+
+					<button class="js-filter-block-toggle filter__toggle-btn hidden--m hidden--l hidden--xl hidden--xxl">
+						<span class="visuallyhidden">Toggle Filters</span>
+						&times;
+					</button>
+				</div>
+				<div class="filter__list-wrap" id="filter-size">
+		    <ul class="filter__list">
+						{% for size in sizeArr %}
+						{% if collection.tags contains size %}
+							{% assign curr_tag = size | replace: 'size_', '' %}
+							<li class="filter__item">
+								{% if current_tags contains size %}
+									{{ curr_tag | link_to_remove_tag:size | replace:'<a title="', '<a class="filter__link is-active" data-link-collection title="' }}
+								{% else %}
+									{{ curr_tag | link_to_add_tag:size | replace:'<a title="', '<a class="filter__link is-inactive" data-link-collection title="' }}
+								{% endif %}
+							</li>
+						{% endif %}
+						{% endfor %}
+					</ul>
+					</div>
+		  </div>
+			{% endif %}
+		{% endcomment %}
+
+	</div>
+
+	{% if agegroupFilters or typeFilters or genderFilters or colourFilters or sizeFilters or characterFilters %}
+  <p>
+			<a href="{{ collection.url }}" class="cta filter__clear" data-link-collection> Clear all</a>
+			<button type="button" class="js-filter-close-btn btn btn--primary hidden--m hidden--l hidden--xl hidden--xxl fr" aria-expanded="true" aria-controls="filter">Save</button>
+		</p>
+
+	{% endif %}
+
+
+</div>

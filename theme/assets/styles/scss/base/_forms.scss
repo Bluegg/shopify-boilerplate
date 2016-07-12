@@ -1,32 +1,65 @@
-::-webkit-input-placeholder { /* WebKit browsers */
-    color: $color-placeholder;
+::-webkit-input-placeholder {
+	/* WebKit browsers */
+	color: $color-placeholder;
 }
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-    color: $color-placeholder;
+
+:-moz-placeholder {
+	/* Mozilla Firefox 4 to 18 */
+	color: $color-placeholder;
 }
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-    color: $color-placeholder;
+
+::-moz-placeholder {
+	/* Mozilla Firefox 19+ */
+	color: $color-placeholder;
 }
-:-ms-input-placeholder { /* Internet Explorer 10+ */
-    color: $color-placeholder;
+
+:-ms-input-placeholder {
+	/* Internet Explorer 10+ */
+	color: $color-placeholder;
+}
+
+input[type="search"],
+input[type="number"] {
+	-webkit-appearance: none;
 }
 
 .form {
 	margin-bottom: 1em;
-
+	&.is-on {
+		display: block;
+		visibility: visible;
+	}
+	&.is-off {
+		display: none;
+		visibility: hidden;
+	}
 	&__row {
-		@extend .clearfix;
+		max-width: 100%; //IE10 fix
 		margin-bottom: 1em;
-		overflow: visible;
+		&--align-btn {
+			width: 100%;
+			display: flex;
+			align-items: flex-end;
+		}
+		&--flex {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			margin-bottom: 0;
+		}
 	}
 	&__label {
 		display: block;
-		margin-bottom: 0.5em;
+		margin-bottom: .25em;
 		font-size: 1em;
 		color: $color-text;
-
 		.form__row--error & {
 			color: $color-red;
+		}
+		&--inline {
+			white-space: nowrap;
+			display: inline-block;
+			margin: 0 1rem 0 0;
 		}
 	}
 	&__field {
@@ -34,25 +67,78 @@
 		box-shadow: none;
 		border: 1px solid $color-borders;
 		border-radius: $global-radius;
-		padding: 0.8em 1em;
-		font-size: 1em;
+		padding: .25em .5em;
+		font-size: 16px;
 		font-weight: normal;
 		width: 100%;
 		transition: all 300ms ease-in-out;
+		-webkit-appearance: none;
 
-		&:hover, &:focus {
-			outline: none;
+		@include mq($m) {
+			padding: .8em .75em;
 		}
-
+		&[type="search"] {
+			padding-right: 0; // otherwise the clear search button (browser) can be covered or shorten the field
+		}
+		&:focus,
+		&:hover {
+			outline: none;
+			border-color: $color-links;
+		}
 		&--textarea {
 			resize: vertical;
 		}
 
-		.form__row--error &,
-		.form__row--error &:focus {
-			box-shadow: inset 0 0 0 1px $color-red;
-			border-color: $color-red;
+		.is-error & {
+			border-color: $color-red;;
+			&:hover,
+			&:focus {
+				border-color: darken($color-red, 9);
+			}
 		}
+
+	}
+	&__action {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		&--align-right {
+			@include mq($m) {
+				justify-content: flex-end;
+				.btn {
+					margin-left: 1em;
+				}
+			}
+		}
+	}
+
+	&__errors-list {
+		list-style-type: none;
+		color: $color-red;
+		font-size: .9em;
+		padding: 0;
+		margin: .5em 0 0;
+		animation-name: bounce;
+	}
+
+}
+
+.form--readonly {
+	.form__row {
+		margin: 0;
+		.form__label {
+			@extend .visuallyhidden;
+		}
+		.btn,
+		a {
+			display: none;
+		}
+	}
+	.custom-select::after {
+		display: none;
+	}
+	.address__default-chkbox {
+		display: none;
 	}
 }
 
@@ -60,7 +146,6 @@
 	&__field {
 		display: inline-block;
 		margin-right: 1em;
-
 		&--error {
 			border: 0;
 			box-shadow: none;
@@ -72,45 +157,38 @@
 }
 
 
-.errors-list {
-	list-style-type: none;
-	color: $color-red;
-	font-size: 0.9em;
-	padding: 0;
-	margin: 0;
-}
-
 .custom-select {
 	padding: 0;
 	position: relative;
-
-	&:after {
-		content: "";
+	border-radius: $global-radius;
+	overflow: hidden;
+	&::after {
+		content: "▼";
 		position: absolute;
-		width: 2em;
-		height: 2em;
-		top: 0;
-		bottom: 0;
-		margin: auto 0;
+		width: 1em;
+		height: 1em;
+		top: 50%;
+		margin: -.6em 0 auto;
 		right: 1em;
 		background-size: 100% auto;
 		z-index: 2;
 		pointer-events: none;
 	}
-
 	&__field {
-		background: none repeat scroll 0% 0% transparent;
-		border: 1px solid transparent;
+		background: none repeat scroll 0 0 transparent;
+		border: 1px solid $color-borders;
 		outline: medium none;
 		width: 100%;
-		width: calc(100% + 3em);
-		padding: 0.8em 1em;
+		padding: .85em 3em .85em 1em;
 		margin: 0;
+		-moz-appearance: none;
 		-webkit-appearance: none;
-		&:focus {
+		background-color: white;
+		&:focus,
+		&:hover {
 			width: 100%;
 			outline: none;
-			border: 1px solid $color-borders;
+			border-color: $color-links;
 		}
 	}
 }
@@ -118,13 +196,13 @@
 /* ------------------------------------  */
 /* START OF UGLY BROWSER-SPECIFIC HACKS */
 /* ----------------------------------  */
-
 /* OPERA - Pre-Blink nix the custom arrow, go with a native select button to keep it simple. Targeted via this hack http://browserhacks.com/#hack-a3f166304aafed524566bc6814e1d5c7 */
-x:-o-prefocus, .select-wrap::after {
-  display:none;
+.select-wrap::after,
+x:-o-prefocus {
+	display: none;
 }
 
- /* IE 10/11+ - This hides native dropdown button arrow so it will have the custom appearance, IE 9 and earlier get a native select - targeting media query hack via http://browserhacks.com/#hack-28f493d247a12ab654f6c3637f6978d5 - looking for better ways to achieve this targeting */
+/* IE 10/11+ - This hides native dropdown button arrow so it will have the custom appearance, IE 9 and earlier get a native select - targeting media query hack via http://browserhacks.com/#hack-28f493d247a12ab654f6c3637f6978d5 - looking for better ways to achieve this targeting */
 /* The second rule removes the odd blue bg color behind the text in the select button in IE 10/11 and sets the text color to match the focus style's - fix via http://stackoverflow.com/questions/17553300/change-ie-background-color-on-unopened-focused-select-box */
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
 	.custom-select__field::-ms-expand {
@@ -136,21 +214,9 @@ x:-o-prefocus, .select-wrap::after {
 	}
 }
 
-
 /* FIREFOX won't let us hide the native select arrow, so we have to make it wider than needed and clip it via overflow on the parent container. The percentage width is a fallback since FF 4+ supports calc() so we can just add a fixed amount of extra width to push the native arrow out of view. We're applying this hack across all FF versions because all the previous hacks were too fragile and complex. You might want to consider not using this hack and using the native select arrow in FF. Note this makes the menus wider than the select button because they display at the specified width and aren't clipped. Targeting hack via http://browserhacks.com/#hack-758bff81c5c32351b02e10480b5ed48e */
-/* Show only the native arrow */
-@-moz-document url-prefix() {
-	.custom-select {
-		overflow: hidden;
-	}
-	.custom-select__field {
-		width: 120%;
-		width: -moz-calc(100% + 3em);
-		width: calc(100% + em);
-	}
-}
-
 /* Firefox focus has odd artifacts around the text, this kills that. See https://developer.mozilla.org/en-US/docs/Web/CSS/:-moz-focusring */
+
 .custom-select__field:-moz-focusring {
 	color: transparent;
 	text-shadow: 0 0 0 #000;
@@ -159,3 +225,24 @@ x:-o-prefocus, .select-wrap::after {
 /* ------------------------------------  */
 /*  END OF UGLY BROWSER-SPECIFIC HACKS  */
 /* ------------------------------------  */
+
+.page__sort {
+	@include mq($m) {
+		justify-content: flex-end;
+	}
+}
+
+input.mce_inline_error {
+	border-color: $color-red !important;
+	&:focus,
+	&:hover {
+		border-color: darken($color-red, 9) !important;
+	}
+}
+div.mce_inline_error {
+	background-color: transparent !important;
+	color: $color-red !important;
+	font-weight: 400 !important;
+	margin-top: .5em !important;
+	padding: 0 !important;
+}

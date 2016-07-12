@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="no-js">
+<html class="no-js" lang="en">
   <head>
     {% include 'head-title' %}
     {{ 'modernizr.js' | asset_url | script_tag }}
@@ -24,26 +24,14 @@
   </head>
   <body>
 
-    <div class="global-wrapper" id="global-wrapper">
+		<div class="global-wrapper" id="global-wrapper">
 
     {% include 'site-header' %}
 
-    <main class="main" role="main">
+    <main class="main {% if templates contains '404' or template contains 'page.404' %}page-404{% endif %}" role="main">
 
-      <div class="wrapper">
-
-        {% include 'breadcrumb' %}
-
-        {{ content_for_layout }}
-
-        {% if template contains 'index' or template contains 'collection' or template contains 'search' %}
-
-          <hr>
-
-          {% include 'mailchimp-signup' %}
-
-        {% endif %}
-
+      <div class="page-content{% if collection %} collection-theme--{{ collection.handle }}{% endif %}">
+      {{ content_for_layout }}
       </div>
 
     </main>
@@ -51,6 +39,49 @@
     {% include 'site-footer' %}
 
     </div>
+
+		{% unless template == 'customers/login' %}
+		<div class="modal js-modal" aria-hidden="true" aria-labelledby="loginModal"  role="dialog" data-modal-trigger="modal-login">
+			<div class="modal__inner">
+				<h1 class="visuallyhidden" id="loginModal">{{ settings.text_login_title }}</h1>
+				{% include 'login-form' %}
+				<button class="js-modal-close-btn modal__close-btn">&times;</button>
+			</div>
+		</div>
+		{% endunless %}
+
+		<div class="modal js-modal" aria-hidden="true" aria-labelledby="mailchimpModalDescription" aria-describedby="mailchimpModalHeader" role="dialog" data-modal-trigger="modal-mailchimp-signup">
+			<div class="modal__inner">
+				<h1 class="visuallyhidden" id="mailchimpModalDescription">{{ settings.mailchimp_cta_text }}</h1>
+				{% include 'mailchimp-signup-form' %}
+				<button class="js-modal-close-btn modal__close-btn">&times;</button>
+			</div>
+		</div>
+
+		<div class="modal js-modal" aria-hidden="true" aria-labelledby="newAddressModal" role="dialog" data-modal-trigger="modal-new-address">
+			<div class="modal__inner">
+				<div class="modal__header">
+					<h1 class="title title--sub" id="newAddressModal">Add a new address</h1>
+				</div>
+				{% include 'new-address-form' %}
+				<button class="js-modal-close-btn modal__close-btn">&times;</button>
+			</div>
+		</div>
+
+		{% for address in customer.addresses %}
+			<div class="modal js-modal" aria-hidden="true" aria-labelledby="updateAddressModal{{address.id}}" role="dialog" data-modal-trigger="modal-edit-address-{{address.id}}">
+				<div class="modal__inner">
+					<div class="modal__header">
+					<h1 class="title title--sub" id="updateAddressModal{{address.id}}">Edit new address</h1>
+					</div>
+					{% include 'edit-address-form' %}
+					<button class="js-modal-close-btn modal__close-btn">&times;</button>
+				</div>
+			</div>
+		{% endfor %}
+
+		<!-- OVERLAY USED WHEN MODALS ARE ACTIVE -->
+		<div id="modal-overlay" class="modal__overlay" tabindex="-1"></div>
 
     {{ 'app.js' | asset_url | script_tag }}
 
@@ -64,7 +95,6 @@
     {% if template contains 'collection' %}
 
       {{ "shopify_common.js"  | shopify_asset_url | script_tag }}
-      {% include 'js-collection' %}
 
     {% endif %}
 
@@ -75,6 +105,23 @@
       {% include 'js-addresses' %}
 
     {% endif %}
+
+
+{% if template contains 'login' %}
+
+  {% if resetPassword %}
+  <script>
+
+    (function($) {
+      $("#reset-success").addClass('is-active').attr('aria-live', 'polite');
+    })(jQuery);
+
+  </script>
+  {% endif %}
+
+{% endif %}
+
+{% include 'search-autocomplete' %}
 
   </body>
 </html>

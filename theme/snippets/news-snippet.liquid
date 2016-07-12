@@ -1,0 +1,23 @@
+<div class="news-snippet media">
+
+  {% if img and img != '' %}
+  <a href="{{ link }}" class="media__fig news-snippet__fig">
+    <img src="{{ img }}" alt="{{ img_alt }}" class="media__img news-snippet__img">
+  </a>
+  {% endif %}
+
+  <div class="media__body">
+
+    <h2 class="news-snippet__title title title--sub"><a href="{{ link }}">{{ title }}</a></h2>
+
+    {% if post_date %}
+    <p class="typo-meta"><time datetime="{{ post_date | date: '%Y-%m-%d' }}">{{ post_date | date: '%b %-d %Y'  }}</time></p>
+    {% endif %}
+
+    <p class="news-snippet__text">{{ snippet_text }} <a href="{{ link }}" class="news-snippet__more-link">{{ settings.text_read_more }}</a></p>
+
+    
+
+  </div>
+
+</div>

@@ -7,77 +7,84 @@
 
 {% paginate blog.articles by 5 %}
 
-{% comment %}
-  This template is also used for listing out articles of a specific tag.
-  You can change layouts or styles by checking if current_tags is true.
-{% endcomment %}
 
-{% if current_tags %}
-  <h1>{{ blog.title | link_to: blog.url }} &mdash; {{ current_tags.first }}</h1>
-{% else %}
-  <h1>{{ blog.title }}</h1>
-{% endif %}
+<section class="section">
 
-{% comment %}
-  Loop through each article in your blog. This is limited to what you set for pagination above.
+  <div class="wrapper">
 
-  For more info on article liquid tags:
-    - http://docs.shopify.com/themes/liquid-variables/article
-{% endcomment %}
 
-{% for article in blog.articles %}
-  <h3><a href="{{ article.url }}">{{ article.title }}</a></h3>
-  {% capture author %}<strong>{{ article.author }}</strong>{% endcapture %}
-  {% capture date %}<time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: format: 'month_day_year' }}</time>{% endcapture %}
-  <p>{{ 'blogs.article.author_on_date_html' | t: author: author, date: date }}</p>
+    <div class="grid grid--center">
 
-  {% comment %}
-    Add a surrounding div with class 'rte' to anything that will come from the rich text editor.
-    Since this is just a listing page, you can either use the excerpt or truncate the full article.
-  {% endcomment %}
-  <div class="rte">
-    {% if article.excerpt.size > 0 %}
-      {{ article.excerpt }}
-    {% else %}
-      <p>{{ article.content | strip_html | truncatewords: 100 }}</p>
-    {% endif %}
+				<div class="grid__col l-10-12 xl-10-12">
+					{% include 'breadcrumb' %}
+				</div>
+
+	    <div class="grid__col l-10-12 xl-6-12">
+
+
+	      {% if current_tags %}
+	        <h1 class="title title--headline">{{ blog.title | link_to: blog.url }} &mdash; {{ current_tags.first }}</h1>
+	      {% else %}
+	        <h1 class="title title--headline">{{ blog.title }}</h1>
+	      {% endif %}
+
+	      {% comment %}
+	        Loop through each article in your blog. This is limited to what you set for pagination above.
+
+	        For more info on article liquid tags:
+	          - http://docs.shopify.com/themes/liquid-variables/article
+	      {% endcomment %}
+
+	      <div class="article__feed-body">
+	        <ul class="article__feed-list">
+
+	        {% for article in blog.articles %}
+
+	            <li class="article__feed-item">
+	              {% assign content = article.content | strip_html | truncate: 140, "&hellip;" %}
+
+	              {% if article.image %}
+	                {% assign curr_img = article | img_url: 'medium' %}
+
+	              {% else %}
+
+	                {% assign curr_img = '' %}
+
+	              {% endif %}
+
+	              {% include 'news-snippet', img: curr_img, link: article.url, title: article.title, post_date: article.published_at, snippet_text: content, more_text: 'Read more' %}
+	            </li>
+
+	        {% endfor %}
+
+	        </ul>
+	      </div>
+
+	      {% if paginate.pages > 1 %}
+	        <div class="pagination">
+	          {{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}
+	        </div>
+	      {% endif %}
+
+	    </div>
+	    <!-- / .grid__col -->
+
+	    <div class="grid__col l-10-12 xl-4-12">
+
+	      <aside class="contained">
+
+
+	      </aside>
+
+	    </div>
+	    <!-- / .grid__col -->
+
+
+	  </div>
+	  <!-- / .grid -->
+
   </div>
 
-  {% comment %}
-    Show off meta information like number of comments and tags.
-  {% endcomment %}
-  <ul>
-    {% if blog.comments_enabled? %}
-    <li>
-      <a href="{{ article.url }}#comments">
-        {{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}
-      </a>
-    </li>
-    {% endif %}
-
-  {% if article.tags.size > 0 %}
-    <li>
-      <span>{{ 'blogs.article.tags' | t }}:</span>
-      {% for tag in article.tags %}
-        <a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a>{% unless forloop.last %}, {% endunless %}
-      {% endfor %}
-    </li>
-  {% endif %}
-
-  </ul>
-
-  <p><a href="{{ article.url }}">Read more &rarr;</a></p>
-
-  {% unless forloop.last %}<hr>{% endunless %}
-
-{% endfor %}
-
-{% if paginate.pages > 1 %}
-  <hr>
-  <div class="pagination">
-    {{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}
-  </div>
-{% endif %}
-
+</section>
 
 {% endpaginate %}

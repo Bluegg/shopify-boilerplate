@@ -4,23 +4,40 @@
 
     var onVariantSelected = function(variant, selector) {
       // Update price display.
-      console.log('variant selected')
 
       var formattedPrice = Shopify.formatMoney(variant.price, "");
+				var formattedComparePrice = 'was ' + Shopify.formatMoney(variant.compare_at_price, "");
+				var errorMessage = $('#Quantity').data('update-error-message').replace(/@@/g, variant.inventory_quantity)
 
-      if(variant.available) {
-        $('#ProductPrice').text(formattedPrice);
-        $('#soldOutMsg').removeClass('is-active');
-      } else {
-        $('#ProductPrice').text('Sold Out');
-        $('#soldOutMsg').addClass('is-active');
-      }
+				if(variant.available) {
+					$('#ProductPrice').text(formattedPrice);
+					if($('#productWasPrice').length) {
+						$('#productWasPrice').text(formattedComparePrice)
+					}
+      	$('#soldOutMsg .msg-box').removeClass('is-active');
+					$('#Quantity').attr('max', variant.inventory_quantity);
+					$('#Quantity').attr('data-parsley-error-message', errorMessage);
+
+					if (variant.inventory_quantity < 15) {
+						$('#variant-inventory .msg-box__msg').text('Hurry! There\'s only ' + variant.inventory_quantity + ' left!');
+							$('#variant-inventory .msg-box').addClass("is-active");
+					} else {
+						$('#variant-inventory .msg-box').removeClass("is-active");
+					}
+				} else {
+					$('#ProductPrice').text('Sold Out');
+					$('#productWasPrice').text('')
+					$('#soldOutMsg .msg-box').addClass('is-active');
+					$('#variant-inventory .msg-box').removeClass("is-active");
+				}
       // Enable or disable the Add to Cart button.
       $('#AddToCart').attr('disabled', variant.available ? null : 'disabled');
       // Update the featured image.
       if(variant.featured_image) {
-        var sizedImageUrl = Shopify.Image.getSizedImageUrl(variant.featured_image.src, 'grande');
-        updateFeaturedImage(sizedImageUrl)
+					var sizedImageUrl = Shopify.Image.getSizedImageUrl(variant.featured_image.src, '1024x1024');
+					var sizedZoomImageUrl = Shopify.Image.getSizedImageUrl(variant.featured_image.src, 'master');
+
+      	updateFeaturedImage(sizedImageUrl, sizedZoomImageUrl)
       }
 
       // Update the active state of the buttons
@@ -31,8 +48,11 @@
       }
     };
 
-    function updateFeaturedImage(newImageSrc) {
-      $('#FeaturedImage').attr('src', newImageSrc);
+    function updateFeaturedImage(newImageSrc, newZoomSrc) {
+      $('#FeaturedImage').attr('src', '').css('opacity', '0');
+				window.setTimeout(function() {
+					$('#FeaturedImage').attr({'src': newImageSrc, 'data-zoom': newZoomSrc}).css('opacity', '1');
+				}, 0);
     }
 
     // Instantiate the option selectors.
@@ -44,7 +64,9 @@
       e.preventDefault();
       var thisImg;
       if ($(this).data('changeVariant') === '' || $(this).data('changeVariant') === undefined) {
-        updateFeaturedImage($(this).data('imgSrc'));
+        updateFeaturedImage($(this).data('imgSrc'), $(this).data('zoomSrc'));
+        $('[data-change-variant]').removeClass('is-active');
+        $(this).addClass('is-active');
         return
       }
       optionSelectors.selectVariant($(this).data('changeVariant'));

@@ -1,0 +1,111 @@
+.modal {
+	position: fixed;
+	visibility: hidden;
+	z-index: -1;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100vh;
+	overflow: hidden;
+	padding: .25em;
+	opacity: 0;
+	transition: transform .2s ease-out, opacity .2s ease-out, z-index 0s linear .4s;
+	background-color: white;
+	border: 1px solid $color-borders;
+	@include mq($m) {
+		width: 600px;
+		left: 50%;
+		top: 2em;
+		height: auto;
+		max-width: calc(100vw - 4em);
+		margin: 2em;
+		transform: translateX(-50%) translateY(50%);
+		border-radius: $global-radius;
+	}
+	&.is-active {
+		visibility: visible;
+		z-index: 100;
+		opacity: 1;
+		transition: z-index 0s linear, transform .2s ease-out, opacity .2s ease-out;
+
+		@include mq($m) {
+			transform: translateX(-50%) translateY(0);
+		}
+	}
+	::-webkit-scrollbar-thumb {
+		border-radius: 4px;
+	}
+	::-webkit-scrollbar {
+		-webkit-appearance: none;
+		width: 9px;
+	}
+	&__inner {
+		position: relative;
+		padding: 1em .5em;
+		margin: 0;
+		max-height: calc(100vh - 2em);
+		overflow-y: scroll;
+
+		@include mq($m) {
+			max-height: 600px;
+			max-width: calc(100vw - 4em);
+			padding: 1em;
+		}
+	}
+
+
+	&__header {
+		margin: 0 0 .5em;
+	}
+	&__overlay {
+		background-color: rgba(0,0,0,.5);
+		opacity: 0;
+		position: fixed;
+		top: 0;
+		left: 0;
+		z-index: -1;
+		width: 100%;
+		height: 100%;
+		transition: opacity .2s ease-out, z-index 0s linear .2s;
+		&.is-active {
+			z-index: 99;
+			opacity: 1;
+			transition: z-index 0s linear, opacity .2s ease-out;
+		}
+	}
+
+	&__close-btn {
+		position: absolute;
+		top: 2em;
+		right: 1em;
+		width: 2em;
+		height: 2em;
+		padding: 0;
+		background-color: transparent;
+		border: 0 none;
+		cursor: pointer;
+
+		@include mq($m) {
+			right: 1em;
+		}
+		> svg {
+			width: 100%;
+			height: 100%;
+			fill: $color-links;
+		}
+		&:hover,
+		&:focus {
+			> svg {
+				fill: $color-links;
+			}
+		}
+	}
+}
+
+.modal-is-open,
+.modal-is-open body {
+	position: relative;
+	height: 100%;
+	max-height: 100%;
+	overflow: hidden;
+}

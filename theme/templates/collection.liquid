@@ -1,49 +1,124 @@
+{% assign collName = 'character_' | append: collection.title %}
+{% for tag in collection.tags %}
+	{% if tag == collName %}
+		{% assign characterCollection = true %}
+	{% endif %}
+{% endfor %}
+
 <form method="get" action="{{collection.url}}" class="form" id="collection-form">
 
-{% paginate collection.products by 12 %}
+{% paginate collection.products by 48 %}
 
-<header class="page__header">
+<div class="collection__breadcrumb">
+	<div class="wrapper">
+		{% include 'breadcrumb' %}
+	</div>
+</div>
 
+<header class="collection__header">
 
-    <h1 class="page__title">{{ collection.title }}</h1>
+	<div class="wrapper">
 
-    <div class="form__field page__sort">
+		<h1 class="title title--headline typo-nopad typo-center">{% if collection.title == collections.all.title %}All Products{% else %}{{ collection.title }}{% endif %}</h1>
 
-      <label for="sort_by">Sort by</label>
-
-      <div class="form__flex-field">
-
-          {% if collection.sort_by != '' %}
-            {% assign sort_by = collection.sort_by  %}
-          {% else %}
-            {% assign sort_by =  collection.default_sort_by %}
-          {% endif %}
-
-        <select name="sort_by" id="sort_by" data-update-collection>
-          <option value="manual" {% if sort_by == 'manual' %}selected="selected"{% endif %}>Featured</option>
-          <option value="price-ascending" {% if sort_by == 'price-ascending' %}selected="selected"{% endif %}>Price: Low to High</option>
-          <option value="price-descending" {% if sort_by == 'price-descending' %}selected="selected"{% endif %}>Price: High to Low</option>
-          <option value="title-ascending" {% if sort_by == 'title-ascending' %}selected="selected"{% endif %}>A-Z</option>
-          <option value="title-descending" {% if sort_by == 'title-descending' %}selected="selected"{% endif %}>Z-A</option>
-          <option value="created-ascending" {% if sort_by == 'created-ascending' %}selected="selected"{% endif %}>Oldest to Newest</option>
-          <option value="created-descending" {% if sort_by == 'created-descending' %}selected="selected"{% endif %}>Newest to Oldest</option>
-          <option value="best-selling" {% if sort_by == 'best-selling' %}selected="selected"{% endif %}>Best Selling</option>
-        </select>
-
-        <button type="submit" class="btn js-hide">Sort</button>
-      </div>
-
-    </div>
-
+	</div>
 </header>
 
+{% assign currentFilteredProducts = 0 %}
 
-{% assign c = collection.products %}
-{% include 'collection-product-list' with c %}
+<section class="section">
 
-<div class="pagination">
-  {{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}
-</div>
+  <div class="wrapper">
+
+    <div class="grid grid--flex">
+
+      <div class="grid__col m-3-5 xs-order-2 l-3-4">
+
+				<section class="collection__controls">
+
+					<div class="grid grid--tight grid--align-mid">
+
+						<div class="grid__col xs-1-4 s-1-2">
+							<p class="hidden--xs hidden--s typo-nopad">Showing <span class="js-nowshowing">{{ collection.products.size }}</span> of {{ collections.[collection.handle].products_count }} {% unless collection.title == 'All' %}{{ collection.title }} {% endunless %}{{ collections.[collection.handle].products_count | pluralize: 'product', 'products' }}</p>
+
+							<a href="#filter" class="js-filter-toggle cta hidden--m hidden--l hidden--xl hidden--xxl" aria-controls="filter" aria-expanded="true">Refine</a>
+						</div>
+
+						<div class="grid__col xs-3-4 s-1-2">
+
+							<div class="form__row collection__sort-by">
+
+								{% if collection.sort_by != '' %}
+								{% assign sort_by = collection.sort_by  %}
+								{% else %}
+								{% assign sort_by =  collection.default_sort_by %}
+								{% endif %}
+
+								<label for="sort_by" class="form__label form__label--inline">Sort by</label>
+
+								<div class="custom-select">
+									<select name="sort_by" id="sort_by" data-update-collection class="form__field custom-select__field">
+										<option value="manual" {% if sort_by == 'manual' %}selected="selected"{% endif %}>Featured</option>
+										<option value="price-ascending" {% if sort_by == 'price-ascending' %}selected="selected"{% endif %}>Lowest Price</option>
+										<option value="price-descending" {% if sort_by == 'price-descending' %}selected="selected"{% endif %}>Higest Price</option>
+										<option value="title-ascending" {% if sort_by == 'title-ascending' %}selected="selected"{% endif %}>A-Z</option>
+										<option value="title-descending" {% if sort_by == 'title-descending' %}selected="selected"{% endif %}>Z-A</option>
+										<option value="created-ascending" {% if sort_by == 'created-ascending' %}selected="selected"{% endif %}>Oldest</option>
+										<option value="created-descending" {% if sort_by == 'created-descending' %}selected="selected"{% endif %}>Newest</option>
+										<option value="best-selling" {% if sort_by == 'best-selling' %}selected="selected"{% endif %}>Best Selling</option>
+									</select>
+								</div>
+
+								<button type="submit" class="btn js-hide">Sort</button>
+							</div>
+
+						</div>
+					</div>
+
+				</section>
+						<div class="collection__wrap">
+							<div class="collection">
+
+							<input type="hidden" id="currentView" value="{{ collection.products.size }}">
+							<input type="hidden" id="collectionSize" value="{{ paginate.items }}">
+
+							{% assign c = collection.products %}
+							{% include 'collection-product-list' with c %}
+
+							{% if paginate.items > paginate.page_size %}
+							<div class="grid grid--align-mid">
+
+								<div class="grid__col hidden--xs hidden--s hidden--m l-1-2">
+									<p class="hidden--xs hidden--s typo-nopad">Showing <span class="js-nowshowing">{{ collection.products.size }}</span> of {{ collections.[collection.handle].products_count }} {% unless collection.title == 'All' %}{{ collection.title }} {% endunless %}{{ collections.[collection.handle].products_count | pluralize: 'product', 'products' }}</p>
+								</div>
+
+								<div class="grid__col l-1-2">
+									<div class="pagination">
+										{{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}
+									</div>
+								</div>
+
+							</div>
+							{% endif %}
+						</div>
+						</div>
+						<!-- /.collection__wrap -->
+
+      </div>
+      <!-- /.grid__col m-3-4 -->
+
+      <div class="grid__col m-2-5  xs-order-1 l-1-4">
+
+        {% include 'filter' %}
+
+      </div>
+      <!-- /.grid__col m-1-4 -->
+    </div>
+    <!-- /.grid -->
+
+  </div>
+
+</section>
 
 {% endpaginate %}
 

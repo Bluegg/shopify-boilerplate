@@ -1,0 +1,37 @@
+.swatch {
+	width: 1.5em;
+	height: 1.5em;
+	display: inline-block;
+	vertical-align: -6px;
+	margin-right: .5em;
+	border-radius: $global-radius;
+
+	&__wrapper {
+		position: relative;
+	}
+	&__list {
+		display: flex;
+		flex-wrap: wrap;
+		margin-bottom: 1.5em;
+		margin-left: -.5em;
+	}
+	&__item {
+		display: flex;
+		flex: 0 0 33.33%;
+		padding: 0 0 .65em .65em;
+		.btn--swatch {
+			display: block;
+			margin: 0;
+			width: 100%;
+			text-align: center;
+		}
+	}
+}
+
+.size-guide-link {
+	position: absolute;
+	top: .5em;
+	right: 0;
+	display: block;
+	white-space: nowrap;
+}

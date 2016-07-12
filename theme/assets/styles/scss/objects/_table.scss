@@ -1,0 +1,152 @@
+.table {
+	width: 100%;
+
+	&--responsive {
+		@include mq(0, $m) {
+			border-width: 1px 0 !important;
+			th,
+			thead {
+				display: none !important;
+			}
+			td {
+				width: 100% !important;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				text-align: right;
+				padding: .5em 0 !important;
+				// border-width: 1px 2px;
+			}
+			td::before {
+				content: attr(data-label);
+				display: inline-block;
+				width: 5em;
+				margin-right: 1em;
+				text-align: left;
+				vertical-align: middle;
+			}
+			.cart__img-cell {
+				flex-direction: row-reverse;
+				justify-content: flex-end;
+				&::before {
+					font-size: 1.5em;
+					font-weight: 700;
+					width: auto;
+					color: $color-text;
+					text-align: left;
+
+					@include mq($m) {
+						font-size: 1.2em;
+					}
+				}
+			}
+			.order__title-cell {
+				text-align: left;
+				&::before {
+					display: none;
+				}
+			}
+			.cart__image {
+				max-width: 5em;
+				margin-right: 1em;
+			}
+			.cart__prod-cell {
+				border: 0;
+				clip: rect(0 0 0 0);
+				height: 1px;
+				margin: -1px;
+				overflow: hidden;
+				padding: 0;
+				position: absolute;
+				width: 1px;
+			}
+			.cart__qty-cell {
+				label {
+					visibility: hidden;
+					input {
+						visibility: visible;
+					}
+				}
+			}
+			tr:not(:last-child) {
+				.cart__rm-cell {
+					margin-bottom: 1em;
+				}
+			}
+		}
+	}
+
+	// Cells
+	td,
+	th {
+		font-size: .9em;
+		padding: 1em;
+		line-height: $base-line-height;
+		vertical-align: middle;
+
+		@include mq($m) {
+			padding: 1.5em;
+		}
+
+		&:first-child {
+			padding-left: 0;
+		}
+		&:last-child {
+			padding-right: 0;
+			text-align: right;
+		}
+	}
+	th {
+		vertical-align: middle;
+	}
+
+	> tbody > tr {
+		border-top: 1px solid $color-borders;
+	}
+
+	> thead th {
+		text-align: left;
+		vertical-align: bottom;
+	}
+	// Bottom align for column headings
+	> thead td,
+	> thead th {
+		vertical-align: bottom;
+		font-weight: bold;
+		// border-bottom: 2px solid $color-borders;
+	}
+	> tfoot {
+
+		> tr:last-child {
+
+		}
+	}
+	> tfoot th {
+		text-align: right;
+	}
+	// Remove top border from thead by default
+	> colgroup + thead,
+	> thead:first-child,
+	> caption + thead {
+		> tr:first-child {
+			> td,
+			> th {
+				border-top: 0;
+			}
+		}
+	}
+	// Account for multiple tbody instances
+	> tbody + tbody {
+		border-top: 2px solid $color-borders;
+	}
+
+	&--sml {
+		td,
+		th {
+			padding: .5em;
+		}
+	}
+	// Nesting
+	.table {
+	}
+}

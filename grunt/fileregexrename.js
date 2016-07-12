@@ -1,12 +1,12 @@
 module.exports = {
 	dist: {
 		files: {
-			"<%= resources %>/images/icons/**": "<%= resources %>/images/icons/*"
+			"<%= resources %>/assets/images/icons/*": "<%= resources %>/assets/images/icons/*"
 		},
 		options: {
 			replacements: [
 			{
-				pattern: "vectors_",
+				pattern: "Icons_",
 				replacement: ""
 			}]
 		}

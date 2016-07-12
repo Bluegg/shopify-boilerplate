@@ -1,0 +1,21 @@
+<div class="customer-nav">
+		{% if customer %}
+		<a href="/account" class="customer-nav__link customer-nav__link--account icon-text icon-text--rtl">
+			<span class="icon user icon-text__icon"></span>
+			<span class="icon-text__title hidden--xs hidden--s">{{ settings.label_account_link}}</span>
+		</a>
+		{% else %}
+		<a href="/account/login" class="customer-nav__link customer-nav__link--account icon-text icon-text--rtl" data-modal-target="modal-login">
+			<span class="icon user icon-text__icon"></span>
+			<span class="icon-text__title hidden--xs hidden--s">{{ settings.label_login_link }}</span>
+		</a>
+  {% endif %}
+
+  <a href="/cart" class="customer-nav__link customer-nav__link--cart{% unless cart.item_count == 0 %} has-badge{% endunless %} icon-text icon-text--rtl">
+			<span class="icon bag icon-text__icon"></span>
+    <span class="icon-text__title  hidden--xs hidden--s">{{ settings.label_cart_link }}</span>
+    {% unless cart.item_count == 0 %}
+    <span class="badge">{{cart.item_count}}</span>
+    {% endunless %}
+  </a>
+</div>

@@ -1,0 +1,48 @@
+<div id="recover" class="form js-parsley-validate">
+
+	{% form 'recover_customer_password' %}
+
+  {% if form.errors %}
+  <div class="msg-box msg-box--negative is-active" aria-live="alert">
+    <div class="msg-box__msg">
+      <ul class="msg-box__list">
+        {% for field in form.errors %}
+        {% if field == 'form' %}
+        <li class="msg-box__item">
+          {{ form.errors.messages[field] }}
+        </li>
+        {% else %}
+        <li>
+          {{ form.errors.translated_fields[field] }} - {{ form.errors.messages[field] }}
+        </li>
+        {% endif %}
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+
+  <h2 class="title title--sub">{{ settings.text_recover_title }}</h2>
+  <p>{{ settings.text_recover_text }}</p>
+
+
+    {% if form.posted_successfully? %}
+      {% assign resetPassword = true %}
+    {% endif %}
+
+    <div class="form__row">
+      <label class="form__label" for="RecoverEmail">{{ settings.form_email_label }}</label>
+      <input class="form__field" type="email" data-parsley-required-message="{{settings.form_error_email_required}}" data-parsley-email-message="{{settings.form_error_email}}" value="" name="email" id="RecoverEmail"  autocorrect="off" autocapitalize="off" required>
+    </div>
+
+    <div class="form__row">
+
+      <input type="submit" class="btn btn--primary fr" value="{{ settings.text_recover_btn }}">
+
+      <button type="button" id="HideRecoverPasswordLink" class="btn btn--secondary fl">{{ settings.form_cancel_btn }}</button>
+
+    </div>
+
+  </div>
+
+{% endform %}

@@ -1,34 +1,110 @@
-<header class="page__header">
 
-  <h1 class="page__title">{% if search.results_count > 0 %}{{ search.results_count }}{% else %}No{% endif %} product{% unless search.results_count == 1 %}s{% endunless %} found for {{ search.terms | escape }}</h1>
+{% assign searchTerm = search.terms | escape | remove: '*' %}
 
-</header>
+{% assign tagString = '' %}
 
-{% if search.results_count > 0 %}
+{% for item in search.results %}
 
-  <div class="grid grid--tight grid--flex">
+  {% if item.object_type != 'article' or item.object_type != 'page' %}
 
-    {% for product in search.results %}
-
-      <div class="grid__col grid__col--flex xs-1-2 m-1-3 l-1-4">
-
-        <a href="{{ product.url | within: collection }}" class="tile tile--product">
-      		<div class="tile__img">
-      			<img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
-      		</div>
-      		<div class="tile__header">
-      			<h2 class="tile__title">{{ product.title }}</h2>
-            <p class="tile__price">{{ product.price | money}}</p>
-      		</div>
-      	</a>
-
-      </div>
+    {% for tag in item.tags %}
+      {% assign tagString = tagString | append: tag %}
+      {% assign tagString = tagString | append: '|' %}
     {% endfor %}
+
+  {% endif %}
+{% endfor %}
+
+{% assign collectionTags = tagString | split: "|" %}
+
+{% paginate search.results by 16 %}
+
+<section class="section">
+
+  <div class="wrapper">
+
+			{% assign searchChars = search.terms | split: '' | size %}
+			{% if searchChars >= 5 %}
+
+    {% for collection in collections %}
+
+    {% assign collection = link.object %}
+    {% assign searchTermLower = searchTerm | downcase %}
+    {% assign collectionLower = collection.title | downcase %}
+
+    {% if collectionLower contains searchTermLower %}
+
+
+			{% assign msgTitle = 'Looking for all our __ products?' | replace: '__', collection.title  %}
+
+			<div class="msg-box msg-box--solid msg-box--general is-active">
+				<p class="msg-box__title typo-nopad">{{ msgTitle }}</p>
+				<a href="{{ collection.url }}" class="btn btn--primary">Take a look</a>
+			</div>
+
+    {% endif %}
+    {% endfor %}
+
+		{% endif %}
 
   </div>
 
-{% else %}
+</section>
 
-  <p>Sorry, we couldn't find any products matching your search</p>
+<section class="section">
 
-{% endif %}
+  <div class="wrapper">
+
+    <h1 class="title title--hero page__title">{% if search.results_count > 0 %}{{ search.results_count }}{% else %}No{% endif %} product{% unless search.results_count == 1 %}s{% endunless %} found for {{ searchTerm }}</h1>
+
+
+  {% if search.results_count > 0 %}
+
+    <div class="grid grid--flex">
+
+        {% for product in search.results %}
+
+          <div class="grid__col grid__col--flex xs-1-2 m-1-3 l-1-4">
+
+								<div class="tile tile--product {% if product.compare_at_price %}is-onsale{% endif %}">
+					    		<a href="{{ product.url | within: collection }}" class="tile__img tile__product-img">
+										{% if product.images.size ==0 %}
+										{{ 'product-placeholder.svg' | asset_url | img_tag: 'Image coming soon!' }}
+										{% else %}
+					    			<img src="{{ product.featured_image.src | img_url: 'large' }}" alt="{{ product.featured_image.alt | escape }}">
+										{% endif %}
+										<div class="gallery__loader"></div>
+					    		</a>
+					    		<header class="tile__header">
+					    			<a href="{{ product.url | within: collection }}"><h2 class="title tile__title">{{ product.title }}</h2></a>
+					          <p class="title tile__price">{{ product.price | money}}
+											{% if product.compare_at_price %}<span class="tile__was-price">was {{ product.compare_at_price | money }}</span>{% endif %}</p>
+					    		</header>
+					    	</div>
+
+          </div>
+        {% endfor %}
+
+    </div>
+    <!-- / .grid -->
+
+  {% else %}
+
+    <p>Sorry, we couldn't find any products matching your search</p>
+
+  {% endif %}
+
+  {% if paginate.pages > 1 %}
+    <div class="pagination">
+      {{ paginate | default_pagination | replace: '&laquo; Previous', '&larr;' | replace: 'Next &raquo;', '&rarr;' }}
+    </div>
+  {% endif %}
+
+
+
+  </div>
+
+</section>
+
+
+{% endpaginate %}

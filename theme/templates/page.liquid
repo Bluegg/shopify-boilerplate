@@ -1,7 +1,45 @@
-<h1>{{ page.title }}</h1>
+<section class="section">
 
-<div class="rte">
+  <div class="wrapper">
 
-  {{ page.content }}
+		<div class="grid grid--center grid--spaced">
 
-</div>
+      <div class="grid__col l-10-12 xl-10-12">
+
+        {% include 'breadcrumb' %}
+
+      </div>
+
+      <div class="grid__col l-10-12 xl-6-12">
+
+        <article class="article" itemscope itemtype="http://schema.org/Article">
+
+          <header>
+              <h1 class="title title--headline">{{ page.title }}</h1>
+          </header>
+
+          <div class="article__content rte" itemprop="articleBody">
+            {{ page.content }}
+          </div>
+
+        </article>
+
+    </div>
+    <!-- / .grid__col -->
+
+    <div class="grid__col l-10-12 xl-4-12">
+
+      <aside class="panel">
+
+      
+
+      </aside>
+
+    </div>
+    <!-- / .grid__col -->
+
+
+  </div>
+  <!-- / .grid -->
+
+</section>

@@ -1,0 +1,30 @@
+<div class="js-tabs tabs">
+
+	<div class="tabs__tab-list-wrap">
+		<ul class="tabs__tab-list" role="tablist">
+			<li class="tabs__tab-item" role="presentation"><a href="#section1" role="tab" aria-controls="section1" class="tabs__trigger js-tab-trigger">Featured Products</a></li>
+			<li class="tabs__tab-item" role="presentation"><a href="#section2" role="tab" aria-controls="section1" class="tabs__trigger js-tab-trigger">Kids Bestsellers</a></li>
+			<li class="tabs__tab-item" role="presentation"><a href="#section3" role="tab" aria-controls="section1" class="tabs__trigger js-tab-trigger">Adults Bestsellers</a></li>
+		</ul>
+
+	</div>
+
+	 <section id="section1" role="tabpanel" class="tabs__panel js-tab-panel">
+		 {% assign c = collections.homepage-featured-collection.products %}
+		 {% include 'overflow-product-list' with c, limit_count: 6 %}
+	 </section>
+
+	 <section id="section2" role="tabpanel" class="tabs__panel js-tab-panel">
+
+		 {% assign c = collections.kids-bestsellers.products %}
+		 {% include 'overflow-product-list' with c, limit_count: 6 %}
+
+	 </section>
+
+	 <section id="section3" role="tabpanel" class="tabs__panel js-tab-panel">
+		 {% assign c = collections.adults-bestsellers.products %}
+		 {% include 'overflow-product-list' with c, limit_count: 6 %}
+	 </section>
+
+
+</div>

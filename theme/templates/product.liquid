@@ -1,24 +1,27 @@
-<div itemscope itemtype="http://schema.org/Product">
+<div class="wrapper">
+	{% include 'breadcrumb' %}
+</div>
+
+<div itemscope itemtype="http://schema.org/Product" class="wrapper">
 
   {% comment %}
     Get first variant, or deep linked one
   {% endcomment %}
   {% assign current_variant = product.selected_or_first_available_variant %}
 
-  <header class="page-header"></header>
+  <section class="product-wrap section">
 
-  <div class="product__wrap">
+    <div class="grid grid--center">
 
-    <div class="grid">
-
-      <div class="grid__col l-2-3">
+      <div class="grid__col item l-3-5 xl-6-12">
 
         <div class="gallery">
 
           {% assign featured_img = product.selected_or_first_available_variant.featured_image | default: product.featured_image %}
 
-          <figure class="fig">
-             <img id="FeaturedImage" src="{{ featured_img | product_img_url: 'grande' }}" alt="{{ featured_img.alt }}" class="gallery__img" />
+          <figure class="gallery__fig">
+             <img id="FeaturedImage" src="{{ featured_img | product_img_url: '1024x1024' }}" data-zoom="{{ featured_img | product_img_url: 'master' }}" alt="{{ featured_img.alt }}" class="gallery__img" />
+						 <div class="gallery__loader"></div>
           </figure>
 
         </div>
@@ -26,8 +29,8 @@
         {% if product.images.size > 1 %}
           <div class="gallery__thumbs">
             {% for image in product.images %}
-            <a href="{{ image | product_img_url: 'original'}}" class="gallery__thumb" target="_blank" data-change-variant="{{ image.variants.first.id }}" data-img-src="{{ image.src | product_img_url: 'grande' }}">
-              <img src="{{ image | product_img_url: 'thumb' }}" class="gallery__img" alt="{{ image.alt }}" />
+            <a href="{{ image | product_img_url: 'original'}}" class="gallery__thumb{% if forloop.first == true %} is-active{% endif %}" target="_blank" data-change-variant="{{ image.variants.first.id }}" data-img-src="{{ image.src | product_img_url: 'grande' }}" data-zoom-src="{{ image.src | product_img_url: 'master' }}">
+              <img src="{{ image | product_img_url: 'thumb' }}" class="gallery__thumb-img" alt="{{ image.alt }}" />
             </a>
             {% endfor %}
           </div>
@@ -36,149 +39,176 @@
       </div>
 
 
-      <div class="grid__col l-1-3">
+      <div class="grid__col item l-2-5 xl-5-12 ">
 
+        <div class="product-description{% if product.compare_at_price %} is-onsale{% endif %}">
 
-          <div class="product-description">
-            <h1 class="product-description__title">{{ product.title }}
-            <span id="ProductPrice" class="product-description__price">{{ current_variant.price | money }}</span>
+          <header class="product-description__header">
+            <h1 class="title title--headline product-description__title typo-nopad">{{ product.title }}
             </h1>
+            <div class="product-description__price-wrap">
+									<span id="ProductPrice" class="title title--secondary product-description__price">
+										{{ current_variant.price | money }}
+									</span>
 
-            <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm" class="form">
-
-              {% comment %}
-
-              A single drop down for all variants
-
-              {% endcomment %}
-
-              <div class="grid grid--flex">
+									{% if product.compare_at_price %}
+										<span id="productWasPrice" class="product-description__was-price">
+											was {{ product.compare_at_price | money }}</span>
+									{% endif %}
 
 
-                  <div class="grid__col">
+									<div id="soldOutMsg">
+										<div class="msg-box msg-box--negative">
+											<p id="soldOutMsg" class="msg-box__msg">Sorry. This combination has sold out.</p>
+										</div>
+									</div>
 
-                    {% comment %}
-                    {% if product.options.size == 1 %}
+									<div id="variant-inventory">
+									{% if product.variants.first.inventory_quantity < 15 %}
+									<div class="msg-box msg-box--warning">
+										<p class="msg-box__msg">Hurry! There's only {{ product.variants.first.inventory_quantity }} left!</p>
+									</div>
+									{% endif %}
+									</div>
+								</div>
+          </header>
 
-                      <div class="form__field">
+					<div class="form js-parsley-validate">
 
-                        {% for option in product.options %}
+          <form action="/cart/add" method="post" enctype="multipart/form-data" id="AddToCartForm">
 
-                          <h3 class="label">{{ option }}</h3>
+            {% comment %}
 
-                          {% for variant in product.variants %}
-                            <a class="btn btn--small btn--variant{% if variant == product.selected_or_first_available_variant %} is-active{% endif %}" href="{{product.url}}?variant={{ variant.id }}" data-change-variant="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</a>
-                          {% endfor %}
+            A single drop down for all variants
 
-                        {% endfor %}
+            {% endcomment %}
 
-                      </div>
+            <div class="grid grid--tight grid--flex">
 
-                    {% endif %}
-                    {% endcomment %}
+              <div class="grid__col">
 
-                    <div id="productSelectWrap" class="form__field">
+										<section class="section section--bordered-top">
 
-                      <label for="productSelect" class="label">Options</label>
-                      <select name="id" id="productSelect" class="select">
-                        {% for variant in product.variants %}
-                          {% if variant.available %}
+												<div class="js-tabs tabs">
 
-                            <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }} | {{ variant.price | money_with_currency }}</option>
+													<div class="tabs__tab-list-wrap">
 
-                          {% else %}
-                            <option disabled="disabled">
-                              {{ variant.title }} - {{ 'products.product.sold_out' | t }}
-                            </option>
-                          {% endif %}
-                        {% endfor %}
-                      </select>
+														<ul class="tabs__tab-list" role="tablist">
+															<li class="tabs__tab-item" role="presentation"><a href="#section1" role="tab" aria-controls="section1" class="tabs__trigger js-tab-trigger">Description</a></li>
+															<li class="tabs__tab-item" role="presentation"><a href="#section2" role="tab" aria-controls="section1" class="tabs__trigger js-tab-trigger">Details</a></li>
+														</ul>
 
-                    </div>
+													</div>
 
-                    {% if product.variants.size > 1 %}
+													<section id="section1" role="tabpanel" class="tabs__panel js-tab-panel section">
+														<div class="product-description__detail rte" itemprop="description">
+			                  {{ product.description }}
+			                </div>
+													</section>
 
-                      <!-- Variant swatches. -->
-                      {% for option in product.options %}
-                      <div class="swatch__wrap">
-                        {% include 'swatch' with option %}
-                      </div>
-                      {% endfor %}
+													<section id="section2" role="tabpanel" class="tabs__panel js-tab-panel section">
+														<div class="product-description__summary">
 
-                    {% endif %}
+					 			             <!-- <h2 class="title">Product Summary</h2> -->
+					 			             <table class="product-description__table table table--sml">
 
-                  </div>
+																	</table>
 
-                  <div class="grid__col">
+					 			           </div>
+					 			           <!--/ .product-description__summary  -->
+											 	 </section>
 
-                    <div class="msg-box msg-box--negative" id="soldOutMsg">
-                      <p class="msg-box__msg">Sorry, this combination has sold out.</p>
-                    </div>
+												</div>
 
-                  </div>
+											</section>
 
-                <div class="grid__col grid__col--flex xs-1-4 s-1-3">
 
-                  <div class="form__field">
 
-                    <label for="Quantity">Quantity</label>
-                    <input type="number" id="Quantity" name="quantity" value="1" min="1" class="quantity-selector">
+                <div id="productSelectWrap" class="form__row">
 
-                  </div>
+                  <label for="productSelect" class="title title--sub">Options</label>
+                  <select name="id" id="productSelect" class="select form__field">
+                    {% for variant in product.variants %}
+                      {% if variant.available %}
+
+                        <option {% if variant == product.selected_or_first_available_variant %} selected="selected" {% endif %} data-sku="{{ variant.sku }}" value="{{ variant.id }}">{{ variant.title }} | {{ variant.price | money_with_currency }}</option>
+
+                      {% else %}
+                        <option disabled="disabled">
+                          {{ variant.title }} - {{ 'products.product.sold_out' | t }}
+                        </option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
 
                 </div>
 
-                <div class="grid__col grid__col--flex xs-3-4 s-2-3">
-                  <div class="form__item btn-align-wrap">
+                {% if product.variants.size > 1 %}
 
-                    <button type="submit" id="AddToCart" name="add" class="btn btn--large btn--full">Add to basket</button>
+                  <!-- Variant swatches. -->
+                  {% for option in product.options %}
+                    {% include 'swatch' with option %}
+                  {% endfor %}
 
-                  </div>
+                {% endif %}
+
+              </div>
+              <!--/ .grid__col -->
+
+              <div class="grid__col grid__col--flex xs-1-3 m-1-4">
+
+                <div class="form__row">
+
+                  <label for="Quantity" class="title title--sub">Quantity</label>
+                  <input type="number" id="Quantity" name="quantity" value="1" min="1" max="{{ product.variants.first.inventory_quantity }}" class="quantity-selector form__field" data-parsley-errors-container="#qty-errors" data-parsley-error-message="Sorry. We only have {{ product.variants.first.inventory_quantity }} of this item" data-update-error-message="Sorry. We only have @@ of this item">
+
                 </div>
 
               </div>
+              <!--/ .grid__col -->
 
-            </form>
+              <div class="grid__col grid__col--flex xs-2-3 m-3-4">
+                <div class="form__row form__row--align-btn">
 
-          </div>
+                  <button type="submit" id="AddToCart" name="add" class="btn btn--primary btn--icon btn--full">Add to basket</button>
 
+                </div>
+              </div>
+              <!--/ .grid__col -->
 
-            <h2 class="product-description__subtitle">Description</h2>
+									<div class="grid__col" id="qty-errors"></div>
 
-
-            <div class="rte" itemprop="description">
-              {{ product.description }}
             </div>
+            <!--/ .grid -->
+          </form>
 
-
-            <h2 class="product-description__subtitle">Share this</h2>
-
-            <div class="product-description__body">
-  						<span class="meta__data">
-                <ul class="share">
-              	  <li class="share__item share__item--pin">
-                  	{% include 'pin-button' %}
-                  </li>
-              	    <li class="share__item share__item--facebook">
-                  	{% include 'facebook-button' %}
-                  </li>
-                  <li class="share__item share__item--twitter">
-                    {% include 'twitter-button' %}
-                  </li>
-            	    <li class="share__item share__item--email">
-                  	{% include 'email-button' %}
-                  </li>
-            	   </ul>
-              </span>
-  					</div>
-
-
-          </div>
+					</div>
+					<!-- / .form -->
 
         </div>
+        <!--/ .product-description  -->
 
-    </div>
+					<hr>
 
-  </div>
+        <div class="product-description__share">
+          {% include 'share-block' %}
+        </div>
+
+      </div>
+      <!--/ .grid__col  -->
+
+			<div class="grid__col xl-11-12">
+
+				<div id="trustpilotContainer" class="product-reviews"></div>
+
+			</div>
+
+		</div>
+		<!--/. grid  -->
+
+
+  </section>
+  <!--/ .product-wrap  -->
+
 
 </div>

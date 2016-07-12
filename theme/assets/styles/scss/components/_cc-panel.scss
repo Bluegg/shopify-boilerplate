@@ -1,0 +1,32 @@
+.cc-panel {
+	margin-bottom: 1.5em;
+	&__title {
+		font-size: 1rem;
+		margin-bottom: .5em;
+		text-align: center;
+		opacity: .6;
+		@include mq($m) {
+			text-align: left;
+		}
+	}
+	&__list {
+		display: flex;
+		justify-content: center;
+		margin-left: -.5em;
+
+		@include mq($m) {
+			justify-content: flex-start;
+		}
+	}
+	&__item {
+		margin-left: .5em;
+	}
+	&__icon {
+		width: 50px;
+		margin: 0 auto;
+
+		@include mq($m) {
+			margin: 0;
+		}
+	}
+}

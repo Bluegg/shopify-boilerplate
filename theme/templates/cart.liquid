@@ -1,90 +1,121 @@
-{% if cart.item_count > 0 %}
+<section class="section">
 
-<header class="page__header">
+  {% if cart.item_count > 0 %}
 
-  <h1 class="page__title">Your basket</h1>
+	<div class="form js-parsley-validate">
 
-</header>
+    <form action="/cart" method="post">
 
-<form action="/cart" method="post" novalidate>
+      <div class="wrapper wrapper--narrow">
 
-<div class="wrapper wrapper--narrow">
+        <h1 class="title title--headline">Your basket</h1>
 
-<div class="cart">
-<div class="table-responsive table-wrap">
-<table class="table cart__table">
-  <thead>
+				{% if cart.total_price >= 1500 and cart.total_price <= 2000 %}
+				<div class="msg-box msg-box--solid msg-box--warning is-active">
+					<p class="msg-box__msg">
+						You've almost qualified for free delivery! Just spend another {{ 2500 | minus: cart.total_price | money }} to qualify.
+					</p>
+				</div>
+				{% endif %}
 
-    <tr>
-      <th class="cart__img-cell"></th>
-      <th>Product name</th>
-      <th>Quantity</th>
-      <th class="cart__price-cell" >Item price</th>
-      <th>Remove</th>
-    </tr>
+				{% if cart.total_price >= 2500 %}
+				<div class="msg-box msg-box--solid msg-box--positive is-active">
+					<p class="msg-box__msg">
+						Congratulations! Your order qualifies for free UK delivery
+					</p>
+				</div>
+				{% endif %}
 
-  </thead>
+        <div class="cart">
 
-{% for item in cart.items %}
-<tr>
-  <td class="cart__img-cell"  data-label="{{ item.product.title }}">
-      <a href="{{ item.url | within: collections.all }}" class="cart__image">
-        <img src="{{ item | img_url: 'medium' }}" alt="{{ item.title | escape }}">
-      </a>
-  </td>
-  <td class="cart__prod-cell" data-label="Product name">
-    <a href="{{ item.url }}">
-      {{ item.product.title }}
-      {% unless item.variant.title contains 'Default' %}
-        <br>
-        <small>{{ item.variant.title }}</small>
-      {% endunless %}
-    </a>
-  </td>
-  <td class="cart__qty-cell" data-label="Quantity">
-    <label>Quantity
-    <input type="number" name="updates[]" id="updates_{{ item.id }}" value="{{ item.quantity }}" min="0"></label>
-  </td>
-  <td class="cart__row-price-cell" data-label="Item price" class="text-right">
-    <span class="">
-      {{ item.price | money }}
-    </span>
-  </td>
-  <td class="cart__rm-cell">
-    <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="cart__remove">
-      <small>Remove</small>
-    </a>
-  </td>
-</tr>
-{% endfor %}
-<tr>
-  <th colspan="4" class="cart__price-th">Sub Total</th>
-  <td class="cart__price-cell" data-label="Sub Total"><span class="">{{ cart.total_price | money}}</span></td>
-</tr>
-</table>
+          <div class="table-responsive table-wrap">
 
-<div class="btn-align-wrap">
-  <input type="submit" name="update" class="btn btn--secondary update-cart" value="Update">
-  <input type="submit" name="checkout" class="btn" value="Checkout">
-</div>
+            <table class="table table--responsive cart__table">
+              <thead>
 
+                <tr>
+                  <th class="cart__img-cell"></th>
+                  <th>Product name</th>
+                  <th>Quantity</th>
+                  <th class="cart__price-cell" >Item price</th>
+                  <th>Remove</th>
+                </tr>
 
-</div>
+              </thead>
 
-</div>
+										<tbody>
 
-</div>
+              {% for item in cart.items %}
+              <tr class="cart__table-row">
+              <td class="cart__img-cell"  data-label="{{ item.product.title }}">
+                <a href="{{ item.url | within: collections.all }}" class="cart__image">
+                  <img src="{{ item | img_url: 'medium' }}" alt="{{ item.title | escape }}">
+                </a>
+              </td>
+              <td class="cart__prod-cell" data-label="Product name">
+                <a href="{{ item.url }}" class="title title--secondary typo-nopad cart__prod-title">
+                  {{ item.product.title }}
+                </a>
+												{% unless item.variant.title contains 'Default' %}
+												<span class="cart__variant-title small">
+													{{ item.variant.title }}
+												</span>
+												{% endunless %}
+												<div id="qty-errors"></div>
+              </td>
+              <td class="cart__qty-cell" data-label="Quantity">
+                <label for="updates_{{ item.id }}" class="form__label">Quantity</label>
+                <input type="number" name="updates[]" class="form__field" id="updates_{{ item.id }}" value="{{ item.quantity }}" min="0" max="{{ item.variant.inventory_quantity }}"  data-parsley-error-message="Sorry. We only have {{ item.variant.inventory_quantity }} of this item in stock" data-parsley-errors-container="#qty-errors" >
+              </td>
+              <td class="cart__row-price-cell" data-label="Item price" class="text-right">
+                <span class="title title--secondary typo-nopad">
+                  {{ item.price | money }}
+                </span>
+              </td>
+              <td class="cart__rm-cell">
+                <a href="/cart/change?line={{ forloop.index }}&amp;quantity=0" class="cta cta--remove">
+                  <small>Remove</small>
+                </a>
+              </td>
+              </tr>
+              {% endfor %}
+              <tr class="cart__total-row">
+              <th colspan="4" class="cart__price-th">Sub Total</th>
+              <td class="cart__price-cell" data-label="Sub Total"><span class=" title title--hero typo-nopad">{{ cart.total_price | money}}</span></td>
+              </tr>
+									</tbody>
+            </table>
 
+            <div class="form__action form__action--align-right">
 
-</form>
-{% else %}
-<header class="page__header">
+										<button type="submit" name="update" class="cta">Update basket</button>
 
-  <h1 class="page__title">Your basket is empty</h1>
+										<button type="submit" name="checkout" class="btn btn--primary btn--primary-icon">
+											Checkout
+										</button>
 
-</header>
+            </div>
 
-<p><a href="{{shop.url}}">Continue shopping</a></p>
+          </div>
 
-<hr>
-{% endif %}
+        </div>
+
+      </div>
+
+    </form>
+
+	</div>
+
+    {% else %}
+
+    <div class="wrapper wrapper--narrow">
+
+      <h1 class="title title--headline">Your basket is empty</h1>
+
+      <p><a href="{{shop.url}}">Continue shopping</a></p>
+
+    </div>
+
+    {% endif %}
+
+</section>

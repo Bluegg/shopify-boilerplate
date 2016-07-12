@@ -4,73 +4,67 @@
 {% endcomment %}
 
 {% unless template == 'index' or template == 'cart'  %}
-<nav class="nav--breadcrumbs" role="navigation" aria-label="breadcrumbs">
+<nav class="breadcrumb" role="navigation" aria-label="breadcrumbs">
 
-  <ul class="nav__list">
+  <ul class="breadcrumb__list">
 
-    <li class="nav__item">
-      <a href="/" class="nav__link">Home</a>
+    <li class="breadcrumb__item">
+      <a href="/" class="breadcrumb__link">Home</a>
     </li>
 
     {% if template contains 'order' or template contains 'addresses' %}
-    <li class="nav__item">
+    <li class="breadcrumb__item">
       <span aria-hidden="true">&rsaquo;</span>
-      <a href="/account" class="nav__link">Account</a>
+      <a href="/account" class="breadcrumb__link">Account</a>
     </li>
     {% endif %}
 
-    <li class="nav__item">
+    <li class="breadcrumb__item">
       {% if template contains 'product' %}
 
         {% if collection %}
           <span aria-hidden="true">&rsaquo;</span>
           {% if collection.handle %}
             {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
-            {{ collection.title | link_to: url }}
+
+            <a href="{{url}}" class="breadcrumb__link">{{ collection.title }}</a>
           {% endif %}
         {% endif %}
         <span aria-hidden="true">&rsaquo;</span>
-        <span>{{ product.title }}</span>
+        <span class="breadcrumb__current">{{ product.title }}</span>
 
       {% elsif template contains 'collection' and collection.handle %}
 
         <span aria-hidden="true">&rsaquo;</span>
-        {% if current_tags %}
-          {% capture url %}/collections/{{ collection.handle }}{% endcapture %}
-          {{ collection.title | link_to: url }}
-          <span aria-hidden="true">&rsaquo;</span>
-          <span>{{ current_tags | join: " + " }}</span>
-        {% else %}
-          <span>{{ collection.title }}</span>
-        {% endif %}
+          <span class="breadcrumb__current">{{ collection.title }}</span>
 
       {% elsif template == 'blog' %}
 
         <span aria-hidden="true">&rsaquo;</span>
         {% if current_tags %}
-          {{ blog.title | link_to: blog.url }}
+          <a href="{{blog.url}}" class="breadcrumb__link">{{ blog.title }}</a>
           <span aria-hidden="true">&rsaquo;</span>
-          <span>{{ current_tags | join: " + " }}</span>
+          <span class="breadcrumb__current">{{ current_tags | join: " + " }}</span>
         {% else %}
-        <span>{{ blog.title }}</span>
+        <span class="breadcrumb__current">{{ blog.title }}</span>
         {% endif %}
 
       {% elsif template == 'article' %}
 
         <span aria-hidden="true">&rsaquo;</span>
-        {{ blog.title | link_to: blog.url }}
+        <a href="{{blog.url}}" class="breadcrumb__link">{{ blog.title }}</a>
         <span aria-hidden="true">&rsaquo;</span>
-        <span>{{ article.title }}</span>
+        <span class="breadcrumb__current">{{ article.title }}</span>
 
       {% elsif template contains 'page' %}
 
        <span aria-hidden="true">&rsaquo;</span>
-       <span>{{ page.title }}</span>
+       <span class="breadcrumb__current">{{ page.title }}</span>
 
       {% else %}
 
        <span aria-hidden="true">&rsaquo;</span>
-       <span>{{ page_title }}</span>
+       <span class="breadcrumb__current">{{ page_title }}</span>
 
       {% endif %}
     </li>

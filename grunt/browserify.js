@@ -7,7 +7,8 @@ module.exports = {
 			browserifyOptions: {
 				debug: true
 			},
-			transform: [['babelify', {presets: ["es2015"]}]],
+			transform: [['babelify', {presets: ['es2015']}]],
+			noParse: ['drift-zoom'],
 			plugin: ['minifyify']
 		}
 	}

@@ -1,113 +1,48 @@
 <!-- /templates/customers/login.liquid -->
 
+{% comment %}
+  If a user has successfully requested a new password, the form.posted_successfully? variable
+  is set to true within the 'recover_customer_password' form only. Within that form you'll see
+  the variable 'resetPassword' set to true, which is used to initialize timber.resetPasswordSuccess().
+{% endcomment %}
   {% comment %}
-    If a user has successfully requested a new password, the form.posted_successfully? variable
-    is set to true within the 'recover_customer_password' form only. Within that form you'll see
-    the variable 'resetPassword' set to true, which is used to initialize timber.resetPasswordSuccess().
-  {% endcomment %}
-    {% comment %}
-  <div class="note form-success" id="ResetSuccess" style="display:none;">
-    {{ 'customer.recover_password.success' | t }}
-  </div>
-  {% endcomment %}
+<div class="note form-success" id="ResetSuccess" style="display:none;">
+  {{ 'customer.recover_password.success' | t }}
+</div>
+{% endcomment %}
+<section class="section">
 
-  <div class="grid grid--center">
+  <div class="wrapper">
 
-    <div class="grid__col m-2-3 l-1-2">
-
-      <div id="CustomerLoginForm" class="form">
-        {% form 'customer_login' %}
-
-          <h1 class="h2">Customer login</h1>
-
-          {% if form.errors %}
-            <div class="msg-box msg-box--negative is-active">
-                {{ form.errors | default_errors }}
-            </div>
-          {% endif %}
-
-          {% if resetPassword %}
-
-            <div class="msg-box msg-box--positive">
-              <p class="msg-box__msg">Thanks. We've sent you an email to recover your password.</p>
-            </div>
-
-          {% endif %}
-
-          <div class="form__field">
-            <label for="CustomerEmail">Email</label>
-            <input type="email" name="customer[email]" id="CustomerEmail" class="{% if form.errors contains 'email' %} form__input--error{% endif %}" placeholder="Your email address" autocorrect="off" autocapitalize="off" autofocus>
-          </div>
+    <div class="grid grid--center grid--align-mid grid--flex">
 
 
-          {% if form.password_needed %}
-          <div class="form__field">
-            <label for="CustomerPassword">Password</label>
-            <input type="password" value="" name="customer[password]" id="CustomerPassword" class="{% if form.errors contains 'password' %} form__input--error{% endif %}" placeholder="Password">
-          </div>
-          {% endif %}
-
-          <div class="form__field">
-            <input type="submit" class="btn btn--full" value="Log in">
-          </div>
-          <p>
-            <a href="{{ shop.url }}">Back to shop</a>
-            {% if form.password_needed %}
-              <a href="#recover" id="RecoverPassword" class="fr">I forgot my password</a>
-            {% endif %}
-          </p>
-
-        {% endform %}
-      </div>
-
-      <div id="recover">
-
-        <h2>Recover Password</h2>
-        <p>Fill in your details and we'll send you a link to reset your password</p>
-
-        <div class="form-vertical">
-          {% form 'recover_customer_password' %}
-
-            {% if form.errors %}
-              <div class="msg-box msg-box--negative is-active">
-                  {{ form.errors | default_errors }}
-              </div>
-            {% endif %}
+      <div class="grid__col  l-2-3">
 
 
-            {% if form.posted_successfully? %}
-              {% assign resetPassword = true %}
-            {% endif %}
+            {% include 'login-form' %}
 
-            <div class="form__field">
-              <label for="RecoverEmail">Email</label>
-              <input type="email" value="" name="email" id="RecoverEmail"  autocorrect="off" autocapitalize="off">
-            </div>
+            {% include 'recovery-form' %}
 
-            <div class="form__field">
-                <input type="submit" class="btn" value="Submit">
-
-                <button type="button" id="HideRecoverPasswordLink" class="fr btn--secondary">Cancel</button>
-            </div>
-          {% endform %}
-        </div>
-
+        
       </div>
 
     </div>
 
   </div>
 
-  {% comment %}
-    If accounts are set as optional, the following will be shown as an option
-    during checkout, not on the default /login page.
-  {% endcomment %}
+</section>
 
-  {% if shop.checkout.guest_login %}
+{% comment %}
+  If accounts are set as optional, the following will be shown as an option
+  during checkout, not on the default /login page.
+{% endcomment %}
 
-    <h2>Or continue as a guest</h2>
+{% if shop.checkout.guest_login %}
 
-    {% form 'guest_login' %}
-      <input type="submit" class="btn" value="Yes, please!">
-    {% endform %}
-  {% endif %}
+  <h2 class="title title--sub">Or continue as a guest</h2>
+
+  {% form 'guest_login' %}
+    <input type="submit" class="btn" value="Yes, please!">
+  {% endform %}
+{% endif %}

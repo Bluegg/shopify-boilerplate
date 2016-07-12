@@ -1,0 +1,80 @@
+.msg-box {
+	position: absolute;
+	margin-bottom: 1.5em;
+	border-radius: $global-radius;
+	opacity: 0;
+
+	&--positive {
+		color: $color-green;
+		&.is-active {
+			animation-name: bounceIn;
+			animation-duration: 1s;
+		}
+	}
+	&--warning {
+		color: $color-orange;
+		&.is-active {
+			animation-name: rubberBand;
+			transform-origin: center center;
+			animation-duration: 1s;
+		}
+	}
+	&--negative {
+		color: $color-red;
+		&.is-active {
+			animation-name: bounce;
+			transform-origin: center bottom;
+			animation-duration: 1s;
+		}
+	}
+	&--general {
+		
+	}
+	&--solid {
+		padding: .5em 1em;
+		color: white;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		flex-direction: column;
+		text-align: center;
+		border: 1px solid $color-borders;
+		@include mq($m) {
+			flex-direction: row;
+			text-align: left;
+		}
+		&.msg-box--positive {
+			background-color: $color-green;
+		}
+		&.msg-box--warning {
+			background-color: $color-orange;
+		}
+		&.msg-box--negative {
+			background-color: $color-red;
+		}
+		&.msg-box--general {
+			color: $color-text;
+		}
+	}
+	&.is-active {
+		position: relative;
+		opacity: 1;
+
+	}
+
+	&__icon {
+		width: 50px;
+	}
+	&__title {
+		font-size: 2rem;
+		font-family: $font-hand;
+	}
+	&__msg {
+		font-size: 1.125rem;
+		font-weight: 700;
+		margin: 0;
+	}
+	&__list {
+		margin: 1em 0 0;
+	}
+}

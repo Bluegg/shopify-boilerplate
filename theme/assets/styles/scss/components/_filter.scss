@@ -1,0 +1,174 @@
+.filter {
+	position: relative;
+	&::after {
+		content: "";
+		width: calc(100% + 4em);
+		position: absolute;
+		top: 0;
+		left: 50%;
+		z-index: -1;
+		height: 100%;
+		transform: translateX(-50%);
+
+		@include mq($m) {
+			display: none;
+		}
+	}
+
+	@include mq(0, $m) {
+		.js & {
+			position: fixed;
+			z-index: -1;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			overflow-y: scroll;
+			opacity: 0;
+			padding: 2em 1em;
+			.filter__list {
+				display: none;
+			}
+		}
+		.js &.is-open,
+		.filter-is-open & {
+			display: block;
+			z-index: 9999;
+			opacity: 1;
+		}
+	}
+
+	&__close-btn {
+		position: absolute;
+		top: 2em;
+		right: 2em;
+		width: 2em;
+		height: 2em;
+		padding: 0;
+		background-color: transparent;
+		border: 0 none;
+		cursor: pointer;
+		> svg {
+			width: 100%;
+			height: 100%;
+			fill: $color-links;
+		}
+		&:hover,
+		&:focus {
+			outline: 0;
+			> svg {
+			}
+		}
+	}
+
+	@include mq($m) {
+	}
+	&__block {
+		overflow: hidden;
+		margin-bottom: 1.5em;
+		border: 1px solid $color-links;
+
+		@include mq($m) {
+			font-size: .9em;
+		}
+		::-webkit-scrollbar {
+			-webkit-appearance: none;
+			width: 9px;
+		}
+		::-webkit-scrollbar-thumb {
+			border-radius: 4px;
+		}
+	}
+	&__title {
+		position: relative;
+		padding: .5em 1em;
+		.is-open & {
+		}
+
+		@include mq($m) {
+			padding: .25em .5em;
+		}
+	}
+	&__toggle-btn {
+		
+		&:hover,
+		&:focus {
+			color: $color-links;
+		}
+
+		> svg {
+			position: absolute;
+			right: 1em;
+			top: 50%;
+			transform: rotate(45deg) translateY(-50%);
+			transform-origin: 50% 0;
+			width: 1.5em;
+			height: 1.5em;
+			fill: currentColor;
+			transition: all .2s ease-out;
+			.is-open & {
+				transform: rotate(0) translateY(-50%);
+			}
+		}
+	}
+	&__list {
+		max-height: 10em;
+		overflow-y: scroll;
+		margin: .25em;
+		.is-open & {
+			display: block !important;
+		}
+		.is-loading & {
+			opacity: .5;
+		}
+
+		@include mq($m) {
+			display: block !important;
+		}
+	}
+	&__item {
+		padding: .25em .5em;
+		&:first-child {
+			margin-top: .5em;
+		}
+	}
+	&__link {
+		position: relative;
+		display: block;
+		padding-left: 2.2em;
+		text-decoration: none;
+		&.is-active,
+		&:focus,
+		&:hover {
+			text-decoration: none;
+		}
+		// Faux checkbox
+		&::before {
+			content: "";
+			position: absolute;
+			left: 0;
+			right: 0;
+			width: 1.25em;
+			height: 1.25em;
+			border: 1px solid;
+		}
+		// Faux checkbox
+		&.is-active::before {
+			@extend .checkmark;
+			content: "";
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			border: 1px solid;
+		}
+	}
+}
+
+.filter-is-open,
+.filter-is-open > body {
+	@include mq($m) {
+		position: relative;
+		height: 100%;
+		overflow-y: hidden;
+	}
+}

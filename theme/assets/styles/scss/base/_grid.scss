@@ -10,56 +10,61 @@ $grid-cols: 12;
 $grid-gutters: 2.4em !global;
 
 .grid {
-	letter-spacing: -0.31em;
+	letter-spacing: -.31em;
 	/*word-spacing: -.43em;*/
 	margin-left: -$grid-gutters;
 }
 
 .grid--center {
 	text-align: center;
-	.grid__col {
+	> .grid__col {
 		text-align: left;
 	}
 }
 
 .grid--reverse {
 	direction: rtl;
-	.grid__col {
+	> .grid__col {
 		direction: ltr;
 	}
 }
 
 .grid--spaced {
-	.grid__col {
+	> .grid__col {
 		margin-bottom: $grid-gutters;
 	}
 
 	&.grid--tight {
-		.grid__col {
+		> .grid__col {
 			margin-bottom: $grid-gutters/2;
 		}
 	}
 }
 
-
 .grid--align-mid {
-	.grid__col {
+	> .grid__col {
 		vertical-align: middle;
 	}
 }
 
+.grid--align-bottom {
+	> .grid__col {
+		vertical-align: bottom;
+	}
+}
+
 .grid--stagger-align {
-	.grid__col:nth-of-type(1n) {
+	> .grid__col:nth-of-type(1n) {
 		text-align: right;
 	}
-	.grid__col:nth-of-type(2n) {
+	> .grid__col:nth-of-type(2n) {
 		text-align: left;
 	}
 }
 
 .grid--tight {
 	margin-left: -1em;
-	.grid__col {
+	> .grid__col {
 		padding-left: 1em;
 	}
 	.item {
@@ -69,19 +74,18 @@ $grid-gutters: 2.4em !global;
 
 .grid--gutterless {
 	margin-left: 0;
-	.grid__col {
+	> .grid__col {
 		padding-left: 0;
 	}
 }
 
 .grid--pixelgutter {
 	margin-left: 1px;
-	.grid__col {
+	> .grid__col {
 		padding-left: 1px;
 		margin-bottom: 1px;
 	}
 }
-
 
 .grid__col {
 	display: inline-block;
@@ -103,7 +107,6 @@ $grid-gutters: 2.4em !global;
 			@if ($enum <= $denom) and ($width < 100%) {
 
 				.#{$breakpoint}-#{$enum}-#{$denom} {
-
 					@if $size <= 0 {
 						width: $width;
 					} @else {
@@ -115,14 +118,19 @@ $grid-gutters: 2.4em !global;
 				}
 
 				.#{$breakpoint}-push-#{$enum}-#{$denom} {
-
 					@if $size <= 0 {
-						left: $width;
+						margin-left: $width;
 						// @include prefixer(flex-basis, $width, webkit moz spec);
 					} @else {
 						@include mq($size) {
-							left: $width;
+							margin-left: #{$width};
 						}
+					}
+				}
+				// Change flex order
+				.#{$breakpoint}-order-#{$enum} {
+					@include mq($size) {
+						order: #{$enum};
 					}
 				}
 			}
@@ -132,7 +140,7 @@ $grid-gutters: 2.4em !global;
 	@include mq($size) {
 
 		.#{$breakpoint}-nopush {
-			left: 0;
+			margin-left: 0;
 		}
 
 		.#{$breakpoint}-1-1 {
@@ -154,7 +162,9 @@ $grid-gutters: 2.4em !global;
 .grid--flex {
 	flex-wrap: wrap;
 	display: flex;
-
+	&.grid--align-mid {
+		align-items: center;
+	}
 	&.grid--center {
 		justify-content: center;
 	}
@@ -164,14 +174,19 @@ $grid-gutters: 2.4em !global;
 	display: flex;
 }
 
+.grid__col--flex-col {
+	display: flex;
+	flex-direction: column;
+}
+
 body.grid-debug {
-	&:before {
+	&::before {
 		position: fixed;
 		top: 0;
 		left: 0;
-		font-size: 0.8em;
-		opacity: 0.5;
-		padding: 0.2em;
+		font-size: .8em;
+		opacity: .5;
+		padding: .2em;
 		width: 1em;
 		line-height: 1em;
 		text-align: center;
