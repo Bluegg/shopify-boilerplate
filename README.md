@@ -1,6 +1,7 @@
 Shopify Boilerplate
 ======================
-This repository provides a suggested directory structure and [Grunt](http://gruntjs.com) configuration for making the Shopify theme development process as smooth as possible. It was forked from [this repo]([https://github.com/discolabs/shopify-theme-scaffold]) by the folks at Disco.
+This repository provides a suggested directory structure and [Grunt](http://gruntjs.com) configuration for making the Shopify theme development process as smooth as possible. It was forked from [
+[this repo](https://github.com/discolabs/shopify-theme-scaffold) by the folks at Disco.
 
 It ships with a few sample theme files, that demonstrate how the scaffold works. You should be able to slot any number of existing themes or theme frameworks in.
 
